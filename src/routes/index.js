@@ -27,5 +27,9 @@ module.exports.set = function(app) {
     app.get('/monitor', function(req, res) {
         res.render('monitor');
     });
-    
+
+    app.get('/api/statistics', function(req, res) {
+        res.json({platform: "bla", statistics:[{type:"users", value:3}]});
+    });
+
 };

@@ -1,15 +1,9 @@
 'use strict';
 
-var statistics = [
-    {platform: "Accurator", users: 10, contributions: 23},
-    {platform: "Waisda?", users: 15, contributions: 44},
-    {platform: "Xeno-canto", users: 215, contributions:10.0000}
-];
-
 var StatisticsContainer = React.createClass({
     getInitialState: function() {
         return {
-            platforms: ["Accurator", "Waisda?", "Xeno-canto"]
+            platforms: ["accurator", "waisda", "xeno-canto"]
         };
     },
     render: function() {
@@ -29,26 +23,47 @@ var StatisticsContainer = React.createClass({
 var PlatformStatisticsBox = React.createClass({
     getInitialState: function() {
         return {
-            platform: "platform",
-            users: "-",
-            contributions: "-"
+            platform: "",
+            statistics: []
         };
     },
+    loadStatisticsFromServer: function() {
+        // console.log("obtaining statistics from ", this.props.url);
+        console.log("obtaining statistics from ", "/api/statistics");
+        $.ajax({
+            url: "/api/statistics?platform=" + this.props.platform,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({platform: data.platform});
+                this.setState({statistics: data.statistics});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                // console.error(this.props.url, status, err.toString());
+                console.error("/api/statistics", status, err.toString());
+            }.bind(this)
+        });
+    },
+    componentDidMount: function() {
+        this.loadStatisticsFromServer();
+        // setInterval(this.loadCommentsFromServer, this.props.pollInterval);
+    },
     render: function() {
-        this.state.platform = this.props.platform;
+        var statisticNodes = this.state.statistics.map(function(statistic) {
+            return (
+                <Statistic key={statistic.type} type={statistic.type} value={statistic.value} />
+            );
+        });
 
         return (
             <div className="platformStatisticsBox col-sm-6 col-md-4">
                 <h3>Statistics {this.state.platform}</h3>
-                <Statistic type={"users"} value={this.state.users} />
-                <Statistic type={"contributions"} value={this.state.contributions} />
+                {statisticNodes}
             </div>
         );
     }
 });
-// <h3>Statistics {this.state.platform}</h3>
-// <Statistic type={"users"} value={this.state.users} />
-// <Statistic type={"contributions"} value={this.state.contributions} />
+
 var Statistic = React.createClass({
     render: function() {
         return (
@@ -197,6 +212,6 @@ var Statistic = React.createClass({
 // instanciate root React component and add components in statistics div
 ReactDOM.render(
     // send data from json object (for now, should be obtained from other places)
-    <StatisticsContainer data={statistics} />,
+    <StatisticsContainer url="/api/statistics" />,
     document.getElementById('statistics')
 );
