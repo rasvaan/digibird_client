@@ -13,9 +13,18 @@ module.exports = {
              key:"waisda"}
         ]);
     },
+    platforms: function() {
+        var data = this.platformData();
+        var platforms = [];
+
+        for (var i=0; i<data.length; i++)
+            platforms[i] = data[i].key;
+
+        return platforms;
+    },
     statistics: function(platformKey) {
         var value = Math.floor((Math.random() * 10) + 1);
-        
+
         return [{type:"users", value:value}];
     },
     platformName: function(platformKey) {

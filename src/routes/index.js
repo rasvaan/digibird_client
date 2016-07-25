@@ -31,9 +31,16 @@ module.exports.set = function(app) {
 
     app.get('/api/statistics', function(req, res) {
         var platformKey = req.query.platform;
-        var platform = platformStatistics.platformName(platformKey);
-        var statistics = platformStatistics.statistics(platformKey);
-        res.json({platform: platform, statistics:statistics});
+
+        if(!platformKey) {
+            var platforms = platformStatistics.platforms();
+            // no specific platform specified, reply available platforms
+            res.json({platforms: platforms});
+        } else {
+            var platform = platformStatistics.platformName(platformKey);
+            var statistics = platformStatistics.statistics(platformKey);
+            res.json({platform: platform, statistics:statistics});
+        }
     });
 
 };

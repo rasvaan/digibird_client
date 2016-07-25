@@ -2,9 +2,23 @@
 
 var StatisticsContainer = React.createClass({
     getInitialState: function() {
-        return {
-            platforms: ["accurator", "waisda", "xeno-canto"]
-        };
+        return { platforms: [] };
+    },
+    loadPlatformsFromServer: function() {
+        $.ajax({
+            url: this.props.url,
+            dataType: 'json',
+            cache: false,
+            success: function(data) {
+                this.setState({platforms: data.platforms});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    },
+    componentDidMount: function() {
+        this.loadPlatformsFromServer();
     },
     render: function() {
         var platformNodes = this.state.platforms.map(function(platform) {
@@ -28,8 +42,6 @@ var PlatformStatisticsBox = React.createClass({
         };
     },
     loadStatisticsFromServer: function() {
-        // console.log("obtaining statistics from ", this.props.url);
-        console.log("obtaining statistics from ", "/api/statistics");
         $.ajax({
             url: "/api/statistics?platform=" + this.props.platform,
             dataType: 'json',
@@ -46,7 +58,7 @@ var PlatformStatisticsBox = React.createClass({
     },
     componentDidMount: function() {
         this.loadStatisticsFromServer();
-        setInterval(this.loadStatisticsFromServer, 10000);
+        setInterval(this.loadStatisticsFromServer, 2000);
         // setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
     render: function() {
