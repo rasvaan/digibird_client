@@ -7,13 +7,15 @@ var statistics = [
 ];
 
 var StatisticsContainer = React.createClass({
-    // getInitialState: function() {
-    //     return {data: []};
-    // },
+    getInitialState: function() {
+        return {
+            platforms: ["Accurator", "Waisda?", "Xeno-canto"]
+        };
+    },
     render: function() {
-        var platformNodes = this.props.data.map(function(platform) {
+        var platformNodes = this.state.platforms.map(function(platform) {
             return (
-                <PlatformStatisticsBox key={platform.platform} data={platform} />
+                <PlatformStatisticsBox key={platform} platform={platform}/>
             );
         });
         return (
@@ -25,20 +27,28 @@ var StatisticsContainer = React.createClass({
 });
 
 var PlatformStatisticsBox = React.createClass({
-    // getInitialState: function() {
-    //     return {data: []};
-    // },
+    getInitialState: function() {
+        return {
+            platform: "platform",
+            users: "-",
+            contributions: "-"
+        };
+    },
     render: function() {
+        this.state.platform = this.props.platform;
+
         return (
             <div className="platformStatisticsBox col-sm-6 col-md-4">
-                <h3>Statistics {this.props.data.platform}</h3>
-                <Statistic type={"users"} value={this.props.data.users} />
-                <Statistic type={"contributions"} value={this.props.data.contributions} />
+                <h3>Statistics {this.state.platform}</h3>
+                <Statistic type={"users"} value={this.state.users} />
+                <Statistic type={"contributions"} value={this.state.contributions} />
             </div>
         );
     }
 });
-
+// <h3>Statistics {this.state.platform}</h3>
+// <Statistic type={"users"} value={this.state.users} />
+// <Statistic type={"contributions"} value={this.state.contributions} />
 var Statistic = React.createClass({
     render: function() {
         return (
