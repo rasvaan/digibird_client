@@ -1,9 +1,9 @@
 'use strict';
 
 var statistics = [
-    {platform: "Accurator", users: 10},
-    {platform: "Waisda?", users: 15},
-    {platform: "Xeno-canto", users: 215}
+    {platform: "Accurator", users: 10, contributions: 23},
+    {platform: "Waisda?", users: 15, contributions: 44},
+    {platform: "Xeno-canto", users: 215, contributions:10.0000}
 ];
 
 var StatisticsContainer = React.createClass({
@@ -11,11 +11,14 @@ var StatisticsContainer = React.createClass({
     //     return {data: []};
     // },
     render: function() {
+        var platformNodes = this.props.data.map(function(platform) {
+            return (
+                <PlatformStatisticsBox key={platform.platform} data={platform} />
+            );
+        });
         return (
             <div className="row">
-                <PlatformStatisticsBox data={this.props.data[0]} />
-                <PlatformStatisticsBox data={this.props.data[1]} />
-                <PlatformStatisticsBox data={this.props.data[2]} />
+                {platformNodes}
             </div>
         );
     }
@@ -28,8 +31,22 @@ var PlatformStatisticsBox = React.createClass({
     render: function() {
         return (
             <div className="platformStatisticsBox col-sm-6 col-md-4">
-                <h2>Statistics {this.props.data.platform}</h2>
+                <h3>Statistics {this.props.data.platform}</h3>
+                <Statistic type={"users"} value={this.props.data.users} />
+                <Statistic type={"contributions"} value={this.props.data.contributions} />
             </div>
+        );
+    }
+});
+
+var Statistic = React.createClass({
+    render: function() {
+        return (
+            <h4 className="statistic">
+                {this.props.value}
+                <span> </span>
+                {this.props.type}
+            </h4>
         );
     }
 });
