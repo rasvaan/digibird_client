@@ -1,4 +1,5 @@
 var blogUtils = require('../helpers/blog');
+var platformStatistics = require('../middlewares/meta-information');
 
 module.exports.set = function(app) {
 
@@ -29,7 +30,10 @@ module.exports.set = function(app) {
     });
 
     app.get('/api/statistics', function(req, res) {
-        res.json({platform: "bla", statistics:[{type:"users", value:3}]});
+        var platformKey = req.query.platform;
+        var platform = platformStatistics.platformName(platformKey);
+        var statistics = platformStatistics.statistics(platformKey);
+        res.json({platform: platform, statistics:statistics});
     });
 
 };

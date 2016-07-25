@@ -46,6 +46,7 @@ var PlatformStatisticsBox = React.createClass({
     },
     componentDidMount: function() {
         this.loadStatisticsFromServer();
+        setInterval(this.loadStatisticsFromServer, 10000);
         // setInterval(this.loadCommentsFromServer, this.props.pollInterval);
     },
     render: function() {
