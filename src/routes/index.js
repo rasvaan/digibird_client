@@ -32,7 +32,7 @@ module.exports.set = function(app) {
 
     app.get('/api/statistics', function(req, res) {
         var platformId = req.query.platform;
-        
+
         if(!platformId) {
             var platformIds = platforms.platformIds();
 
@@ -40,9 +40,12 @@ module.exports.set = function(app) {
             res.json({platforms: platformIds});
         } else {
             var platform = platforms.platform(platformId);
-            console.log(platform);
-            var statistics = platformStatistics.statistics(platformId);
-            res.json({platform: platform.name, statistics:statistics});
+
+            platformStatistics.statistics(platformId)
+            .then(function(statistics) {
+                res.json({platform: platform.name, statistics:statistics});
+            });
+
         }
     });
 

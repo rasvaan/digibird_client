@@ -1,14 +1,20 @@
 [
     {
         "name": "Xeno-canto",
-        "id": "xeno-canto"
+        "id": "xeno-canto",
+        "endpoint_type": "json-api",
+        "endpoint_location": "http://www.xeno-canto.org/api/2/recordings"
     },
     {
         "name": "Accurator",
-        "id": "accurator"
+        "id": "accurator",
+        "endpoint_type": "sparql",
+        "endpoint_location": "http://annotate.accurator.nl/sparql"
     },
     {
         "name": "Waisda?",
-        "id": "waisda"
+        "id": "waisda",
+        "endpoint_type": "sql",
+        "endpoint_location": ""
     }
 ]
