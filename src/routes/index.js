@@ -1,5 +1,6 @@
 var blogUtils = require('../helpers/blog');
 var platformStatistics = require('../middlewares/meta-information');
+var platforms = require('../helpers/platforms');
 
 module.exports.set = function(app) {
 
@@ -30,16 +31,18 @@ module.exports.set = function(app) {
     });
 
     app.get('/api/statistics', function(req, res) {
-        var platformKey = req.query.platform;
+        var platformId = req.query.platform;
+        
+        if(!platformId) {
+            var platformIds = platforms.platformIds();
 
-        if(!platformKey) {
-            var platforms = platformStatistics.platforms();
             // no specific platform specified, reply available platforms
-            res.json({platforms: platforms});
+            res.json({platforms: platformIds});
         } else {
-            var platform = platformStatistics.platformName(platformKey);
-            var statistics = platformStatistics.statistics(platformKey);
-            res.json({platform: platform, statistics:statistics});
+            var platform = platforms.platform(platformId);
+            console.log(platform);
+            var statistics = platformStatistics.statistics(platformId);
+            res.json({platform: platform.name, statistics:statistics});
         }
     });
 

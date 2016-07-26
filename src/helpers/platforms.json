@@ -1,14 +1,14 @@
 [
     {
-        "platform":"Xeno-canto",
-        "key":"xeno-canto"
+        "name": "Xeno-canto",
+        "id": "xeno-canto"
     },
     {
-        "platform":"Accurator",
-        "key":"accurator"
+        "name": "Accurator",
+        "id": "accurator"
     },
     {
-        "platform":"Waisda?",
-        "key":"waisda"
+        "name": "Waisda?",
+        "id": "waisda"
     }
 ]

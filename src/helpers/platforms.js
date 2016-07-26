@@ -5,6 +5,8 @@ Functions used to retrieve information about the different platforms
 incoorporated in DigiBird
 *******************************************************************************/
 var fs = require('fs');
+var path = require('path');
+
 var PLATFORM_FILE = path.join(__dirname, 'platforms.json');
 
 module.exports = {
@@ -18,27 +20,18 @@ module.exports = {
 
         return parsed;
     },
-    platformKeys: function() {
+    platform: function(id) {
+        return this.platforms().find(function(platform) {
+            return platform.id === id;
+        });
+    },
+    platformIds: function() {
         var data = this.platforms();
-        var platformKeys = [];
+        var platformIds = [];
 
         for (var i=0; i<data.length; i++)
-            platformKeys[i] = data[i].key;
+            platformIds[i] = data[i].id;
 
-        return platformKeys;
-    },
-    statistics: function(platformKey) {
-        var value = Math.floor((Math.random() * 10) + 1);
-
-        return [{type:"users", value:value}];
-    },
-    platformName: function(platformKey) {
-        var data = this.platforms();
-
-        for (var i=0; i<data.length; i++) {
-            if (platformKey === data[i].key)
-                return data[i].platform;
-        }
-        return null;
+        return platformIds;
     }
 }
