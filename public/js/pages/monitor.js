@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var StatisticsContainer = React.createClass({
     getInitialState: function() {
