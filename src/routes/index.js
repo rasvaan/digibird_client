@@ -34,16 +34,16 @@ module.exports.set = function(app) {
         var platformId = req.query.platform;
 
         if(!platformId) {
-            var platformIds = platforms.platformIds();
+            var platformInfo = platforms.platforms();
 
             // no specific platform specified, reply available platforms
-            res.json({platforms: platformIds});
+            res.json({platforms: platformInfo});
         } else {
             var platform = platforms.platform(platformId);
 
             platformStatistics.statistics(platformId)
             .then(function(statistics) {
-                res.json({platform: platform.name, statistics:statistics});
+                res.json({platform: platform.name, statistics: statistics});
             });
 
         }
