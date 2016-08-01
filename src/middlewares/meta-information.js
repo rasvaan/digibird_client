@@ -56,7 +56,12 @@ module.exports = {
         // query the platforms endpoint for contributions
         var options = {
             url: platform.endpoint_location,
-            qs: { query: query }
+            method: 'POST', // using post with query as body, get might be more generic?
+            headers: {
+                'Accept': 'application/sparql-results+json',
+                'Content-Type': 'application/sparql-query'
+            },
+            body: query
         };
 
         return request(options)

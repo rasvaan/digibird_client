@@ -9,7 +9,7 @@
         "name": "Accurator",
         "id": "accurator",
         "endpoint_type": "sparql",
-        "endpoint_location": "http://annotate.accurator.nl/sparql"
+        "endpoint_location": "http://annotate.accurator.nl/sparql/"
     },
     {
         "name": "Waisda?",
