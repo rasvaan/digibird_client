@@ -3,6 +3,7 @@ DigiBird meta information component
 *******************************************************************************/
 var platforms = require('../helpers/platforms');
 var request = require('request-promise-native');
+var winston = require('winston');
 
 module.exports = {
     statistics: function(platformId) {
@@ -57,11 +58,12 @@ module.exports = {
             var results = JSON.parse(json);
             var statistics = [{type:"Dutch contributions", value:results.numRecordings}];
             return statistics;
+        }, function(error) {
+            winston.log('error', "Could not obtain results api: ", error);
         });
     },
     statisticsSparql: function(platform, statistic) {
         var queries = this.sparqlStatisticsQueries();
-        console.log("SPARQL query:", queries[statistic]);
 
         // query the platforms endpoint for contributions
         var options = {
@@ -76,10 +78,9 @@ module.exports = {
 
         return request(options)
         .then(function(response) {
-            console.log(response);
             return JSON.parse(response);
         }, function (error) {
-            console.log("error response:", error);
+            winston.log('error', "Could not obtain SPARQL results: ", error);
         });
     },
     sparqlStatisticsQueries: function() {
