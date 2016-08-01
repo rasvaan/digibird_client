@@ -10,6 +10,10 @@ module.exports = {
 
         if (platform.endpoint_type === "json-api") {
             return this.statisticsJson(platform);
+        } else if (platform.endpoint_type === "sparql") {
+            // return this.statisticsSparql(platform);
+            console.log("Get information using SPARQL query");
+            this.statisticsSparql(platform);
         } else {
             var value = Math.floor((Math.random() * 10) + 1);
             var statistics = [{type:"users", value:value}];
@@ -38,6 +42,28 @@ module.exports = {
             var results = JSON.parse(json);
             var statistics = [{type:"Dutch contributions", value:results.numRecordings}];
             return statistics;
+        });
+    },
+    statisticsSparql: function(platform) {
+        var query =
+            "SELECT ?s ?p ?o " +
+            "WHERE " +
+            "{ ?s ?p ?o . } " +
+            "LIMIT 10";
+
+        console.log("SPARQL query:", query);
+
+        // query the platforms endpoint for contributions
+        var options = {
+            url: platform.endpoint_location,
+            qs: { query: query }
+        };
+
+        return request(options)
+        .then(function(response) {
+            console.log("response:", response);
+        }, function (error) {
+            console.log("error response:", error);
         });
     }
 }
