@@ -11,9 +11,24 @@ module.exports = {
         if (platform.endpoint_type === "json-api") {
             return this.statisticsJson(platform);
         } else if (platform.endpoint_type === "sparql") {
-            // return this.statisticsSparql(platform);
-            console.log("Get information using SPARQL query");
-            this.statisticsSparql(platform);
+            var promises = [];
+
+            promises[0] = this.statisticsSparql(platform, "users_birds");
+            promises[1] = this.statisticsSparql(platform, "annotations_birds");
+            promises[2] = this.statisticsSparql(platform, "objects_birds");
+            promises[3] = this.statisticsSparql(platform, "annotated_objects_birds");
+
+            return Promise.all(promises)
+            .then(function(data) {
+                var statistics = [];
+
+                statistics[0] = {type:"users", value:data[0].results.bindings[0].result.value};
+                statistics[1] = {type:"annotations", value:data[1].results.bindings[0].result.value};
+                statistics[2] = {type:"annotated objects", value:data[3].results.bindings[0].result.value};
+                statistics[3] = {type:"total objects", value:data[2].results.bindings[0].result.value};
+
+                return statistics;
+            });
         } else {
             var value = Math.floor((Math.random() * 10) + 1);
             var statistics = [{type:"users", value:value}];
@@ -44,9 +59,9 @@ module.exports = {
             return statistics;
         });
     },
-    statisticsSparql: function(platform) {
+    statisticsSparql: function(platform, statistic) {
         var queries = this.sparqlStatisticsQueries();
-        console.log("SPARQL query:", queries.test);
+        console.log("SPARQL query:", queries[statistic]);
 
         // query the platforms endpoint for contributions
         var options = {
@@ -56,12 +71,13 @@ module.exports = {
                 'Accept': 'application/sparql-results+json',
                 'Content-Type': 'application/sparql-query'
             },
-            body: queries.annotated_objects_birds
+            body: queries[statistic]
         };
 
         return request(options)
         .then(function(response) {
-            console.log("response:", response);
+            console.log(response);
+            return JSON.parse(response);
         }, function (error) {
             console.log("error response:", error);
         });
@@ -78,7 +94,7 @@ module.exports = {
             users:
                 "PREFIX oa: <http://www.w3.org/ns/oa#> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?user) as ?numberUsers) " +
+                "SELECT (COUNT(DISTINCT ?user) as ?result) " +
                 "WHERE { " +
                     "?annotation oa:hasTarget ?work . " +
                     "?annotation oa:annotatedBy ?user . " +
@@ -86,7 +102,7 @@ module.exports = {
             users_birds:
                 "PREFIX oa: <http://www.w3.org/ns/oa#> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?user) as ?numberUsers) " +
+                "SELECT (COUNT(DISTINCT ?user) as ?result) " +
                 "WHERE { " +
                     "?annotation oa:hasTarget ?object . " +
                     "?object rdf:type <http://accurator.nl/bird#Target> . " +
@@ -95,14 +111,14 @@ module.exports = {
             annotations:
                 "PREFIX oa: <http://www.w3.org/ns/oa#> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?annotation) as ?numberAnnotations) " +
+                "SELECT (COUNT(DISTINCT ?annotation) as ?result) " +
                 "WHERE { " +
                     "?annotation rdf:type oa:Annotation . " +
                 "}",
             annotations_birds:
                 "PREFIX oa: <http://www.w3.org/ns/oa#> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?annotation) as ?numberAnnotations) " +
+                "SELECT (COUNT(DISTINCT ?annotation) as ?result) " +
                 "WHERE { " +
                     "?annotation oa:hasTarget ?object . " +
                     "?object rdf:type <http://accurator.nl/bird#Target> . " +
@@ -111,12 +127,12 @@ module.exports = {
             objects:
                 "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?numberObjects) " +
+                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
                 "WHERE { ?object rdf:type edm:ProvidedCHO . }",
             objects_birds:
                 "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?numberObjects) " +
+                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
                 "WHERE { " +
                     "?object rdf:type edm:ProvidedCHO . " +
                     "?object rdf:type <http://accurator.nl/bird#Target> . " +
@@ -125,7 +141,7 @@ module.exports = {
                 "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
                 "PREFIX oa: <http://www.w3.org/ns/oa#> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?numberObjects) " +
+                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
                 "WHERE { " +
                     "?annotation oa:hasTarget ?object . " +
                     "?object rdf:type edm:ProvidedCHO . " +
@@ -134,13 +150,12 @@ module.exports = {
             annotated_objects_birds:
                 "PREFIX oa: <http://www.w3.org/ns/oa#> " +
                 "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?numberObjects) " +
+                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
                 "WHERE { " +
                     "?annotation oa:hasTarget ?object . " +
                     "?object rdf:type <http://accurator.nl/bird#Target> . " +
                     "?annotation rdf:type oa:Annotation . " +
                 "}"
-
         };
 
         return queries;
