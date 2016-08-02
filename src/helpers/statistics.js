@@ -25,16 +25,9 @@ module.exports = {
                 return statistics;
             });
         } else {
-            var value = Math.floor((Math.random() * 10) + 1);
-            var statistics = [{type:"users", value:value}];
-
-
+            // stub for not yet added platforms
             return new Promise(function(resolve, reject) {
-                setTimeout(
-                    function() {
-                        // We fulfill the promise !
-                        resolve(statistics);
-                    }, 1000);
+                resolve([{ "type": "Not yet available", "value": ""}]);
             });
         }
 
@@ -48,6 +41,11 @@ module.exports = {
             return xenoCanto.request(query)
             .then(function(data) {
                 return [{ "type": "Dutch contributions", "value": data.numRecordings }];
+            });
+        } else {
+            // stub for not yet added apis
+            return new Promise(function(resolve, reject) {
+                resolve([{ "type": "Not yet available", "value": ""}]);
             });
         }
     },
