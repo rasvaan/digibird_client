@@ -1,5 +1,5 @@
 var blogUtils = require('../helpers/blog');
-var platformStatistics = require('../middlewares/meta-information');
+var platformStatistics = require('../helpers/statistics');
 var platforms = require('../helpers/platforms');
 
 module.exports.set = function(app) {

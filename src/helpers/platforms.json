@@ -16,7 +16,7 @@
     {
         "name": "Natuurbeelden",
         "id": "natuurbeelden",
-        "endpoint_type": "elsatic-search",
+        "endpoint_type": "elastic-search",
         "endpoint_location": "",
         "statistics": []
     },

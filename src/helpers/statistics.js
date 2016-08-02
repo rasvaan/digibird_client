@@ -1,16 +1,18 @@
 /*******************************************************************************
 DigiBird meta information component
 *******************************************************************************/
-var platforms = require('../helpers/platforms');
+var platforms = require('./platforms');
 var request = require('request-promise-native');
 var winston = require('winston');
+var xeno_canto = require('../middlewares/xeno-canto-api');
 
 module.exports = {
+    // return a promise of statistics of the platform
     statistics: function(platformId) {
         var platform = platforms.platform(platformId);
 
         if (platform.endpoint_type === "json-api") {
-            return this.statisticsJson(platform);
+            return this.statisticsApi(platform);
         } else if (platform.endpoint_type === "sparql") {
             var promises = [];
 
@@ -37,21 +39,16 @@ module.exports = {
 
         return statistics;
     },
-    statisticsJson: function(platform) {
-        // query the platforms endpoint for contributions from the Netherlands
-        var options = {
-            url: platform.endpoint_location,
-            qs: { query: "cnt:netherlands" }
-        };
+    statisticsApi: function(platform) {
+        if (platform.id === "xeno-canto") {
+            // formulate query
+            var query = "cnt:netherlands";
 
-        return request(options)
-        .then(function(json) {
-            var results = JSON.parse(json);
-            var statistics = [{type:"Dutch contributions", value:results.numRecordings}];
-            return statistics;
-        }, function(error) {
-            winston.log('error', "Could not obtain results api: ", error);
-        });
+            return (xeno_canto.request(query)
+            .then(function(data) {
+                return [{type:"Dutch contributions", value:data.numRecordings}];
+            }));
+        }
     },
     statisticsSparql: function(platform, statistic) {
         var queries = this.sparqlStatisticsQueries();
@@ -75,7 +72,6 @@ module.exports = {
             return { "type": name, "value": value };
         }, function (error) {
             winston.log('error', "Could not obtain SPARQL results: ", error);
-
             return { "type": "Error", "value": "No connection established" };
         });
     },
