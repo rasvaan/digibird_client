@@ -18,17 +18,7 @@ module.exports = {
                 promises[i] = this.statisticsSparql(platform, platform.statistics[i]);
 
             return Promise.all(promises)
-            .then(function(data) {
-                var statistics = [];
-
-                for (var i=0; i<platform.statistics.length; i++) {
-                    statistics[i] =
-                        {
-                            type:platform.statistics[i],
-                            value:data[i].results.bindings[0].result.value
-                        };
-                }
-
+            .then(function(statistics) {
                 return statistics;
             });
         } else {
@@ -74,90 +64,131 @@ module.exports = {
                 'Accept': 'application/sparql-results+json',
                 'Content-Type': 'application/sparql-query'
             },
-            body: queries[statistic]
+            body: queries[statistic].query
         };
 
         return request(options)
         .then(function(response) {
-            return JSON.parse(response);
+            var value = JSON.parse(response).results.bindings[0].result.value;
+            var name = queries[statistic].name;
+
+            return { "type": name, "value": value };
         }, function (error) {
             winston.log('error', "Could not obtain SPARQL results: ", error);
+
+            return { "type": "Error", "value": "No connection established" };
         });
     },
     sparqlStatisticsQueries: function() {
         // create an object with queries that can be used for monitor purposes
         var queries =
         {
-            test:
-                "SELECT ?s ?p ?o " +
-                "WHERE " +
-                "{ ?s ?p ?o . } " +
-                "LIMIT 10",
-            users:
-                "PREFIX oa: <http://www.w3.org/ns/oa#> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?user) as ?result) " +
-                "WHERE { " +
-                    "?annotation oa:hasTarget ?work . " +
-                    "?annotation oa:annotatedBy ?user . " +
-                "}",
-            users_birds:
-                "PREFIX oa: <http://www.w3.org/ns/oa#> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?user) as ?result) " +
-                "WHERE { " +
-                    "?annotation oa:hasTarget ?object . " +
-                    "?object rdf:type <http://accurator.nl/bird#Target> . " +
-                    "?annotation oa:annotatedBy ?user . " +
-                "}",
-            annotations:
-                "PREFIX oa: <http://www.w3.org/ns/oa#> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?annotation) as ?result) " +
-                "WHERE { " +
-                    "?annotation rdf:type oa:Annotation . " +
-                "}",
-            annotations_birds:
-                "PREFIX oa: <http://www.w3.org/ns/oa#> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?annotation) as ?result) " +
-                "WHERE { " +
-                    "?annotation oa:hasTarget ?object . " +
-                    "?object rdf:type <http://accurator.nl/bird#Target> . " +
-                    "?annotation rdf:type oa:Annotation . " +
-                "}",
-            objects:
-                "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
-                "WHERE { ?object rdf:type edm:ProvidedCHO . }",
-            objects_birds:
-                "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
-                "WHERE { " +
-                    "?object rdf:type edm:ProvidedCHO . " +
-                    "?object rdf:type <http://accurator.nl/bird#Target> . " +
-                "}",
-            annotated_objects:
-                "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
-                "PREFIX oa: <http://www.w3.org/ns/oa#> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
-                "WHERE { " +
-                    "?annotation oa:hasTarget ?object . " +
-                    "?object rdf:type edm:ProvidedCHO . " +
-                    "?annotation rdf:type oa:Annotation . " +
-                "}",
-            annotated_objects_birds:
-                "PREFIX oa: <http://www.w3.org/ns/oa#> " +
-                "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-                "SELECT (COUNT(DISTINCT ?object) as ?result) " +
-                "WHERE { " +
-                    "?annotation oa:hasTarget ?object . " +
-                    "?object rdf:type <http://accurator.nl/bird#Target> . " +
-                    "?annotation rdf:type oa:Annotation . " +
-                "}"
+            "test":
+                {
+                    "query":
+                        "SELECT ?s ?p ?o " +
+                        "WHERE " +
+                            "{ ?s ?p ?o . } " +
+                        "LIMIT 10",
+                    "name": "test"
+                },
+            "users":
+                {
+                    "query":
+                        "PREFIX oa: <http://www.w3.org/ns/oa#> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?user) as ?result) " +
+                        "WHERE { " +
+                            "?annotation oa:hasTarget ?work . " +
+                            "?annotation oa:annotatedBy ?user . " +
+                        "}",
+                    "name": "total contributors"
+                },
+            "users_birds":
+                {
+                    "query":
+                        "PREFIX oa: <http://www.w3.org/ns/oa#> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?user) as ?result) " +
+                        "WHERE { " +
+                            "?annotation oa:hasTarget ?object . " +
+                            "?object rdf:type <http://accurator.nl/bird#Target> . " +
+                            "?annotation oa:annotatedBy ?user . " +
+                        "}",
+                    "name":"contributors"
+                },
+            "annotations":
+                {
+                    "query":
+                        "PREFIX oa: <http://www.w3.org/ns/oa#> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?annotation) as ?result) " +
+                        "WHERE { " +
+                            "?annotation rdf:type oa:Annotation . " +
+                        "}",
+                    "name": "annotations"
+                },
+            "annotations_birds":
+                {
+                    "query":
+                        "PREFIX oa: <http://www.w3.org/ns/oa#> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?annotation) as ?result) " +
+                        "WHERE { " +
+                            "?annotation oa:hasTarget ?object . " +
+                            "?object rdf:type <http://accurator.nl/bird#Target> . " +
+                            "?annotation rdf:type oa:Annotation . " +
+                        "}",
+                    "name": "annotations"
+                },
+            "objects":
+                {
+                    "query":
+                        "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?object) as ?result) " +
+                        "WHERE { ?object rdf:type edm:ProvidedCHO . }",
+                    "name": "objects"
+                },
+            "objects_birds":
+                {
+                    "query":
+                        "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?object) as ?result) " +
+                        "WHERE { " +
+                            "?object rdf:type edm:ProvidedCHO . " +
+                            "?object rdf:type <http://accurator.nl/bird#Target> . " +
+                        "}",
+                    "name": "objects"
+                },
+            "annotated_objects":
+                {
+                    "query":
+                        "PREFIX edm: <http://www.europeana.eu/schemas/edm/> " +
+                        "PREFIX oa: <http://www.w3.org/ns/oa#> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?object) as ?result) " +
+                        "WHERE { " +
+                            "?annotation oa:hasTarget ?object . " +
+                            "?object rdf:type edm:ProvidedCHO . " +
+                            "?annotation rdf:type oa:Annotation . " +
+                        "}",
+                    "name": "annotated objects"
+                },
+            "annotated_objects_birds":
+                {
+                    "query":
+                        "PREFIX oa: <http://www.w3.org/ns/oa#> " +
+                        "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+                        "SELECT (COUNT(DISTINCT ?object) as ?result) " +
+                        "WHERE { " +
+                            "?annotation oa:hasTarget ?object . " +
+                            "?object rdf:type <http://accurator.nl/bird#Target> . " +
+                            "?annotation rdf:type oa:Annotation . " +
+                        "}",
+                    "name": "annotated objects"
+                }
         };
 
         return queries;
