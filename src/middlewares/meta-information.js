@@ -14,19 +14,20 @@ module.exports = {
         } else if (platform.endpoint_type === "sparql") {
             var promises = [];
 
-            promises[0] = this.statisticsSparql(platform, "users_birds");
-            promises[1] = this.statisticsSparql(platform, "annotations_birds");
-            promises[2] = this.statisticsSparql(platform, "objects_birds");
-            promises[3] = this.statisticsSparql(platform, "annotated_objects_birds");
+            for (var i=0; i<platform.statistics.length; i++)
+                promises[i] = this.statisticsSparql(platform, platform.statistics[i]);
 
             return Promise.all(promises)
             .then(function(data) {
                 var statistics = [];
 
-                statistics[0] = {type:"users", value:data[0].results.bindings[0].result.value};
-                statistics[1] = {type:"annotations", value:data[1].results.bindings[0].result.value};
-                statistics[2] = {type:"annotated objects", value:data[3].results.bindings[0].result.value};
-                statistics[3] = {type:"total objects", value:data[2].results.bindings[0].result.value};
+                for (var i=0; i<platform.statistics.length; i++) {
+                    statistics[i] =
+                        {
+                            type:platform.statistics[i],
+                            value:data[i].results.bindings[0].result.value
+                        };
+                }
 
                 return statistics;
             });

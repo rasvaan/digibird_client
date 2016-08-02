@@ -3,18 +3,28 @@
         "name": "Xeno-canto",
         "id": "xeno-canto",
         "endpoint_type": "json-api",
-        "endpoint_location": "http://www.xeno-canto.org/api/2/recordings"
+        "endpoint_location": "http://www.xeno-canto.org/api/2/recordings",
+        "statistics": ["users_birds", "annotations_birds", "objects_birds", "annotated_objects_birds"]
     },
     {
         "name": "Accurator",
         "id": "accurator",
         "endpoint_type": "sparql",
-        "endpoint_location": "http://annotate.accurator.nl/sparql/"
+        "endpoint_location": "http://annotate.accurator.nl/sparql/",
+        "statistics": ["users_birds", "annotations_birds", "annotated_objects_birds", "objects_birds"]
     },
     {
         "name": "Waisda?",
         "id": "waisda",
         "endpoint_type": "sql",
-        "endpoint_location": ""
+        "endpoint_location": "",
+        "statistics": ["users_birds", "annotations_birds", "objects_birds", "annotated_objects_birds"]
+    },
+    {
+        "name": "Rijksmuseum",
+        "id": "rijksmuseum",
+        "endpoint_type": "sparql",
+        "endpoint_location": "https://rijksmuseum.dydra.com/lizzyjongma/rijksmuseum-collection/sparql",
+        "statistics": ["objects"]
     }
 ]
