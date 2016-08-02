@@ -7,18 +7,25 @@
         "statistics": ["users_birds", "annotations_birds", "objects_birds", "annotated_objects_birds"]
     },
     {
-        "name": "Accurator",
-        "id": "accurator",
-        "endpoint_type": "sparql",
-        "endpoint_location": "http://annotate.accurator.nl/sparql/",
-        "statistics": ["users_birds", "annotations_birds", "annotated_objects_birds", "objects_birds"]
+        "name": "Nederlands soortenregister",
+        "id": "soortenregister",
+        "endpoint_type": "json-api",
+        "endpoint_location": "http://api.biodiversitydata.nl/v0",
+        "statistics": []
+    },
+    {
+        "name": "Natuurbeelden",
+        "id": "natuurbeelden",
+        "endpoint_type": "elsatic-search",
+        "endpoint_location": "",
+        "statistics": []
     },
     {
         "name": "Waisda?",
         "id": "waisda",
         "endpoint_type": "sql",
         "endpoint_location": "",
-        "statistics": ["users_birds", "annotations_birds", "objects_birds", "annotated_objects_birds"]
+        "statistics": []
     },
     {
         "name": "Rijksmuseum",
@@ -26,5 +33,12 @@
         "endpoint_type": "sparql",
         "endpoint_location": "https://rijksmuseum.dydra.com/lizzyjongma/rijksmuseum-collection/sparql",
         "statistics": ["objects"]
+    },
+    {
+        "name": "Accurator",
+        "id": "accurator",
+        "endpoint_type": "sparql",
+        "endpoint_location": "http://annotate.accurator.nl/sparql/",
+        "statistics": ["users_birds", "annotations_birds", "annotated_objects_birds", "objects_birds"]
     }
 ]
