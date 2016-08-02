@@ -1,3 +1,4 @@
+var winston = require('winston');
 var blogUtils = require('../helpers/blog');
 var platformStatistics = require('../helpers/statistics');
 var platforms = require('../helpers/platforms');
@@ -43,7 +44,14 @@ module.exports.set = function(app) {
 
             platformStatistics.statistics(platformId)
             .then(function(statistics) {
-                res.json({platform: platform.name, statistics: statistics});
+                res.json({ "platform": platform.name, "statistics": statistics });
+            }, function(error) {
+                winston.log('error', "Error connecting to " + platform.name + ":", error);
+
+                res.json({
+                    "platorm": platform.name,
+                    "statistics": [{ "type": "Not available", "value":"" }]
+                });
             });
 
         }

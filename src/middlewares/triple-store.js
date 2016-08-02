@@ -27,7 +27,6 @@ module.exports = {
         });
     },
     countQuery: function(platform, query) {
-        console.log("Count god damnit");
         // query the platforms endpoint
         var options = {
             url: platform.endpoint_location,

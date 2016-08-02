@@ -47,7 +47,7 @@ module.exports = {
 
             return xenoCanto.request(query)
             .then(function(data) {
-                return [{type:"Dutch contributions", value:data.numRecordings}];
+                return [{ "type": "Dutch contributions", "value": data.numRecordings }];
             });
         }
     },

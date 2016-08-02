@@ -16,8 +16,6 @@ module.exports = {
         return request(options)
         .then(function(json) {
             return JSON.parse(json);
-        }, function(error) {
-            winston.log('error', "Could not connect to xeno-canto: ", error);
         });
     }
 }
