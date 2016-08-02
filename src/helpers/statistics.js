@@ -4,7 +4,8 @@ DigiBird meta information component
 var platforms = require('./platforms');
 var request = require('request-promise-native');
 var winston = require('winston');
-var xeno_canto = require('../middlewares/xeno-canto-api');
+var xenoCanto = require('../middlewares/xeno-canto-api');
+var tripleStore = require('../middlewares/triple-store');
 
 module.exports = {
     // return a promise of statistics of the platform
@@ -17,7 +18,7 @@ module.exports = {
             var promises = [];
 
             for (var i=0; i<platform.statistics.length; i++)
-                promises[i] = this.statisticsSparql(platform, platform.statistics[i]);
+                promises[i] = this.statisticsTripleStore(platform, platform.statistics[i]);
 
             return Promise.all(promises)
             .then(function(statistics) {
@@ -44,35 +45,18 @@ module.exports = {
             // formulate query
             var query = "cnt:netherlands";
 
-            return (xeno_canto.request(query)
+            return xenoCanto.request(query)
             .then(function(data) {
                 return [{type:"Dutch contributions", value:data.numRecordings}];
-            }));
+            });
         }
     },
-    statisticsSparql: function(platform, statistic) {
-        var queries = this.sparqlStatisticsQueries();
+    statisticsTripleStore: function(platform, statistic) {
+        var query = this.sparqlStatisticsQueries()[statistic];
 
-        // query the platforms endpoint for contributions
-        var options = {
-            url: platform.endpoint_location,
-            method: 'POST', // using post with query as body, get might be more generic?
-            headers: {
-                'Accept': 'application/sparql-results+json',
-                'Content-Type': 'application/sparql-query'
-            },
-            body: queries[statistic].query
-        };
-
-        return request(options)
-        .then(function(response) {
-            var value = JSON.parse(response).results.bindings[0].result.value;
-            var name = queries[statistic].name;
-
-            return { "type": name, "value": value };
-        }, function (error) {
-            winston.log('error', "Could not obtain SPARQL results: ", error);
-            return { "type": "Error", "value": "No connection established" };
+        return tripleStore.countQuery(platform, query.query)
+        .then(function(value) {
+            return { "type": query.name, "value": value };
         });
     },
     sparqlStatisticsQueries: function() {

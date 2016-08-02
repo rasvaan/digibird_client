@@ -1,5 +1,5 @@
 /*******************************************************************************
-DigiBird meta information component
+Xeno-canto API middleware
 *******************************************************************************/
 var platforms = require('../helpers/platforms');
 var request = require('request-promise-native');
