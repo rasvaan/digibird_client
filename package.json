@@ -15,12 +15,18 @@
     "url": "https://github.com/rasvaan/digibird"
   },
   "dependencies": {
+    "babel-core": "^6.13.2",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
     "body-parser": "~1.15.2",
     "cookie-parser": "~1.4.3",
     "express": "~4.14.0",
     "express-handlebars": "^3.0.0",
     "font-awesome": "^4.6.3",
     "jquery": "^3.1.0",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
     "winston": "^2.2.0",
     "wordpress": "^1.2.1"
   },
