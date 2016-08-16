@@ -3,9 +3,10 @@ import Helmet from 'react-helmet';
 
 export default class Blog extends Component {
   render() {
-    // const styles = require('./Blog.scss');
+    const styles = require('./Blog.scss');
+
     return (
-      <div className="container blog">
+      <div className={styles.taglineContainer + ' container'}>
         <Helmet title="Blog"/>
         <div className="row">
           <div className="col-sm-8 col-sm-offset-2">
