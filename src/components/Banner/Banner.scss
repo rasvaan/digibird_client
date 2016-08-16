@@ -1,0 +1,28 @@
+.banner {
+	position: relative;
+
+  .text {
+  	position: absolute;
+  	color: #ffffff;
+  	bottom: 15px;
+  	left: 25px;
+  	display: block;
+  }
+
+  .title {
+  	font-size: 15px; /* legacy support */
+  	font-size: 4vw;
+  	margin-top: 5px;
+  	color: #ffffff;
+  }
+
+  .copyright {
+  	position: absolute;
+  	bottom: 0.5em;
+  	right: 1em;
+  	font-size: 0.8em; /* legacy support */
+  	font-size: 1vw;
+  	color: #666666;
+  	display: block;
+  }
+}

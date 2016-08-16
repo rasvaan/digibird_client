@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Banner } from 'components';
 import Helmet from 'react-helmet';
 
 export default class Home extends Component {
@@ -8,6 +9,7 @@ export default class Home extends Component {
     return (
       <div>
         <Helmet title="Home"/>
+        <Banner />
         <div className={styles.taglineContainer + ' container'}>
           <div className="row">
             <div className="col-md-8 col-md-offset-2">
