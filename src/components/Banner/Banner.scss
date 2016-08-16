@@ -25,4 +25,15 @@
   	color: #666666;
   	display: block;
   }
+
+  @media all and (max-width: 992px) and (min-width: 600px) {
+  	.text { bottom: 10px; }
+  	.copyright {visibility: hidden; }
+  }
+
+  @media all and (max-width: 599px) and (min-width: 320px) {
+  	.text { bottom: 5px; }
+  	.title {	font-size: 8vw; }
+  	.copyright {visibility: hidden; }
+  }
 }
