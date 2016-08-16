@@ -3,12 +3,14 @@ import {IndexRoute, Route} from 'react-router';
 import { isLoaded as isAuthLoaded, load as loadAuth } from 'redux/modules/auth';
 import {
     App,
+    Blog,
     Chat,
     Home,
     Widgets,
     About,
     Login,
     LoginSuccess,
+    People,
     Survey,
     NotFound,
   } from 'containers';
@@ -47,7 +49,9 @@ export default (store) => {
 
       { /* Routes */ }
       <Route path="about" component={About}/>
+      <Route path="blog" component={Blog}/>
       <Route path="login" component={Login}/>
+      <Route path="people" component={People}/>
       <Route path="survey" component={Survey}/>
       <Route path="widgets" component={Widgets}/>
 
