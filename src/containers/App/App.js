@@ -63,12 +63,12 @@ export default class App extends Component {
     return (
       <div className={styles.app}>
         <Helmet {...config.app.head}/>
-        <Navbar fixedTop>
+        <canvas className={styles.navbarStub}></canvas>
+        <Navbar fixedTop inverse className={styles.navbar}>
           <Navbar.Header>
             <Navbar.Brand>
-              <IndexLink to="/" activeStyle={{color: '#33e0ff'}}>
-                <div className={styles.brand}/>
-                <span>{config.app.title}</span>
+              <IndexLink to="/">
+                <img className={styles.brand} src="img/logos/digibird-inverted.png" alt="DigiBird"></img>
               </IndexLink>
             </Navbar.Brand>
             <Navbar.Toggle/>
