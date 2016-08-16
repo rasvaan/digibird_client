@@ -58,7 +58,6 @@ export default class App extends Component {
   };
 
   render() {
-    const {user} = this.props;
     const styles = require('./App.scss');
 
     return (
@@ -76,31 +75,13 @@ export default class App extends Component {
           </Navbar.Header>
 
           <Navbar.Collapse eventKey={0}>
-            <Nav navbar>
+            <Nav navbar pullRight>
               <LinkContainer to="/blog">
-                <NavItem eventKey={98}>Blog</NavItem>
+                <NavItem eventKey={1}>Blog</NavItem>
               </LinkContainer>
               <LinkContainer to="/people">
-                <NavItem eventKey={99}>People</NavItem>
+                <NavItem eventKey={2}>People</NavItem>
               </LinkContainer>
-
-              {!user &&
-              <LinkContainer to="/login">
-                <NavItem eventKey={5}>Login</NavItem>
-              </LinkContainer>}
-              {user &&
-              <LinkContainer to="/logout">
-                <NavItem eventKey={6} className="logout-link" onClick={this.handleLogout}>
-                  Logout
-                </NavItem>
-              </LinkContainer>}
-            </Nav>
-            {user &&
-            <p className={styles.loggedInMessage + ' navbar-text'}>Logged in as <strong>{user.name}</strong>.</p>}
-            <Nav navbar pullRight>
-              <NavItem eventKey={1} target="_blank" title="View on Github" href="https://github.com/erikras/react-redux-universal-hot-example">
-                <i className="fa fa-github"/>
-              </NavItem>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

@@ -5,7 +5,6 @@ import {
     App,
     Blog,
     Home,
-    Login,
     LoginSuccess,
     People,
     NotFound,
@@ -44,7 +43,6 @@ export default (store) => {
 
       { /* Routes */ }
       <Route path="blog" component={Blog}/>
-      <Route path="login" component={Login}/>
       <Route path="people" component={People}/>
 
       { /* Catch all route */ }
