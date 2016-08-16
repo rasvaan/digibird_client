@@ -9,7 +9,7 @@ export default class Home extends Component {
     return (
       <div>
         <Helmet title="Home"/>
-        <Banner />
+        <Banner title="" image="home" />
         <div className={styles.taglineContainer + ' container'}>
           <div className="row">
             <div className="col-md-8 col-md-offset-2">

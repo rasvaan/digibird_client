@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Banner } from 'components';
 import Helmet from 'react-helmet';
 
 export default class Blog extends Component {
@@ -6,22 +7,25 @@ export default class Blog extends Component {
     const styles = require('./Blog.scss');
 
     return (
-      <div className={styles.taglineContainer + ' container'}>
+      <div>
         <Helmet title="Blog"/>
-        <div className="row">
-          <div className="col-sm-8 col-sm-offset-2">
-            <div className="col-sm-12">
-              <h2>Blog title</h2>
-            </div>
-            <div className="col-sm-12">
-              <h6>
-                <i className="fa fa-clock-o"></i>
-                date
-                <a className="blog-link" href="link"><i className="fa fa-wordpress"></i> Link to post</a>
-              </h6>
-            </div>
-            <div className="col-sm-12">
-              blogcontents
+        <Banner title="Blog" image="blog" />
+        <div className={styles.taglineContainer + ' container'}>
+          <div className="row">
+            <div className="col-sm-8 col-sm-offset-2">
+              <div className="col-sm-12">
+                <h2>Blog title</h2>
+              </div>
+              <div className="col-sm-12">
+                <h6>
+                  <i className="fa fa-clock-o"></i>
+                  date
+                  <a className="blog-link" href="link"><i className="fa fa-wordpress"></i> Link to post</a>
+                </h6>
+              </div>
+              <div className="col-sm-12">
+                blogcontents
+              </div>
             </div>
           </div>
         </div>
