@@ -67,7 +67,7 @@ export default class App extends Component {
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLink to="/">
-                <img className={styles.brand} src="img/logos/digibird-inverted.png" alt="DigiBird"></img>
+                <div className={styles.brand} />
               </IndexLink>
             </Navbar.Brand>
             <Navbar.Toggle/>
@@ -92,7 +92,7 @@ export default class App extends Component {
         <div className={styles.footer + ' container'}>
             <div className="row">
                 <div className="col-md-8 col-md-offset-2">
-                    <p>DigiBird is a valorisation project funded by the Dutch national program <a href="http://www.commit-nl.nl"><img src="img/logos/commit.png" id="commit-logo"></img></a></p>
+                    <p>DigiBird is a valorisation project funded by the Dutch national program <a href="http://www.commit-nl.nl"><img className={styles.commitLogo} src="img/logos/commit.png" /></a></p>
                 </div>
             </div>
         </div>

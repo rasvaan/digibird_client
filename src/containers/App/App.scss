@@ -9,11 +9,24 @@
     display: block;
   }
   .brand {
-    height: 33px;
-  	padding-bottom: 5px;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    display: inline-block;
+    background: url('./logo.png') no-repeat center center;
+    width: 110px;
+    height: 34px;
+    margin: 5px 5px 0 0;
   }
   .footer {
   	padding-top: 10px;
     text-align: center;
+    .commitLogo {
+    	margin-left: 2px;
+    	margin-bottom: 4px;
+      vertical-align: bottom;
+    	width: 45px;
+    	height: 15px;
+    }
   }
 }
