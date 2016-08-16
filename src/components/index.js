@@ -1,8 +1,9 @@
 /**
  *  Point of contact for component modules
  *
- *  ie: import { CounterButton, InfoBar } from 'components';
+ *  ie: import { Banner, Footer } from 'components';
  *
  */
 
 export Banner from './Banner/Banner';
+export Footer from './Footer/Footer';

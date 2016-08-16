@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Banner } from 'components';
+import { Banner, Footer } from 'components';
 import Helmet from 'react-helmet';
 
 export default class Blog extends Component {
@@ -29,6 +29,7 @@ export default class Blog extends Component {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

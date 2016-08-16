@@ -59,7 +59,7 @@ module.exports = {
     media: false,
     'list-group': false,
     panels: false,
-    wells: false,
+    wells: true,
     'responsive-embed': false,
     close: false,
     modals: false,

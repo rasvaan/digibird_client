@@ -89,14 +89,6 @@ export default class App extends Component {
           {this.props.children}
         </div>
 
-        <div className={styles.footer + ' container'}>
-            <div className="row">
-                <div className="col-md-8 col-md-offset-2">
-                    <p>DigiBird is a valorisation project funded by the Dutch national program <a href="http://www.commit-nl.nl"><img className={styles.commitLogo} src="img/logos/commit.png" /></a></p>
-                </div>
-            </div>
-        </div>
-
       </div>
     );
   }
