@@ -10,7 +10,7 @@ export default class Blog extends Component {
       <div>
         <Helmet title="Blog"/>
         <Banner title="Blog" image="blog" />
-        <div className={styles.taglineContainer + ' container'}>
+        <div className={`${styles.taglineContainer} container`}>
           <div className="row">
             <div className="col-sm-8 col-sm-offset-2">
               <div className="col-sm-12">
