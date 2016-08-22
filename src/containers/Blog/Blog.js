@@ -1,29 +1,11 @@
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {Banner, Footer} from 'components';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {load} from 'redux/modules/blog';
 import Helmet from 'react-helmet';
 
-@connect(
-    state => ({
-      blogLoaded: state.blog.loaded,
-      blogFetchError: state.blog.loadError,
-      blogs: state.blog.blogs
-    }),
-    dispatch => bindActionCreators({load}, dispatch))
 export default class Blog extends Component {
-  static propTypes = {
-    blogs: PropTypes.object,
-    load: PropTypes.func.isRequired,
-    blogLoaded: PropTypes.bool,
-    blogFetchError: PropTypes.string
-  }
-
   render() {
-    const {blogs} = this.props;
     const styles = require('./Blog.scss');
-    console.log('render', blogs);
+
     return (
       <div>
         <Helmet title="Blog"/>
@@ -42,7 +24,7 @@ export default class Blog extends Component {
                 </h6>
               </div>
               <div className="col-sm-12">
-                blogcontents message: {blogs.message}
+                blogcontents message
               </div>
             </div>
           </div>
