@@ -1,10 +1,28 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import {Banner, Footer} from 'components';
 import Helmet from 'react-helmet';
+import {connect} from 'react-redux';
+import {load} from '../../redux/modules/blog'
 
+@connect(
+  state => ({
+    blogPosts: state.blog.blogPosts,
+    loadingBlogs: state.blog.loading,
+  }),
+  {loadBlogs: load}
+)
 export default class Blog extends Component {
+  static propTypes = {
+    blogPosts: PropTypes.object,
+    loadingBlogs: PropTypes.bool,
+    loadBlogs: PropTypes.func
+  }
+  componentWillMount() {
+    this.props.loadBlogs();
+  }
   render() {
     const styles = require('./Blog.scss');
+    const {blogPosts, loadingBlogs} = this.props;
 
     return (
       <div>
