@@ -4,8 +4,7 @@ const LOAD_FAIL = 'redux-example/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
-  blogPosts: {},
-
+  blogPosts: {}
 };
 
 export default function blog(state = initialState, action = {}) {

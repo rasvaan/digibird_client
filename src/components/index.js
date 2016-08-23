@@ -8,4 +8,3 @@
 export Banner from './Banner/Banner';
 export Footer from './Footer/Footer';
 export BlogPost from './BlogPost/BlogPost';
-export BlogPostList from './BlogPostList/BlogPostList';
