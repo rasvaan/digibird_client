@@ -2,6 +2,7 @@ import React from 'react';
 import {IndexRoute, Route} from 'react-router';
 import {
     App,
+    Monitor,
     Blog,
     Home,
     People,
@@ -19,6 +20,7 @@ export default () => {
 
       { /* Routes */ }
       <Route path="blog" component={Blog}/>
+      <Route path="monitor" component={Monitor}/>
       <Route path="people" component={People}/>
 
       { /* Catch all route */ }
