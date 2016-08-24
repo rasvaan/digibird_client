@@ -34,11 +34,11 @@ export default class Blog extends Component {
       <div>
         <Helmet title="Blog"/>
         <Banner title="Blog" image="blog" />
-        <div className={`${styles.taglineContainer} container`}>
+        <div className={`${styles.blog} container`}>
           {(blogsLoaded ?
              blogPosts.map((post) => {
                return (
-                 <BlogPost title={post.title} date={post.date} content={post.content} key={post.id} />
+                 <BlogPost title={post.title} link={post.link} date={post.date} content={post.content} key={post.id} />
                );
              })
             : <span>No Blog posts</span>
