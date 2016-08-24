@@ -4,7 +4,7 @@ import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
 import {load} from '../../redux/modules/blog';
 import {BlogPost} from 'components';
-import { asyncConnect } from 'redux-async-connect';
+import { asyncConnect } from 'redux-connect';
 
 @connect(
   state => ({

@@ -10,7 +10,6 @@ export default class BlogPost extends Component {
 
   prettyDate(dateTime) {
     const date = new Date(dateTime);
-    console.log(date);
     return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`;
   }
 
