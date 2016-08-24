@@ -1,5 +1,18 @@
-node_modules
+# node modules can be installed using npm install
+node_modules/
+
+# folder with files compiled by webpack
+dist/
+webpack-assets.json
+webpack-stats.json
+
+# log files
 npm-debug.log
-posts.json
-*_credentials.js
 digibird.log
+
+
+# file storing blog posts
+posts.json
+
+# file containing credentials to retrieve blog posts
+*_credentials.js
