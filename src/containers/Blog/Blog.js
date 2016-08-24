@@ -38,7 +38,7 @@ export default class Blog extends Component {
           {(blogsLoaded ?
              blogPosts.map((post) => {
                return (
-                 <BlogPost content={post.content} key={post.id} />
+                 <BlogPost title={post.title} date={post.date} content={post.content} key={post.id} />
                );
              })
             : <span>No Blog posts</span>
