@@ -8,3 +8,4 @@
 export Banner from './Banner/Banner';
 export Footer from './Footer/Footer';
 export BlogPost from './BlogPost/BlogPost';
+export Platform from './Platform/Platform';
