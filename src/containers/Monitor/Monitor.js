@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import { load } from '../../redux/modules/platforms';
+import { loadPlatforms } from '../../redux/modules/platforms';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { Platform } from 'components';
 
 @connect(
   state => ({
-    platforms: state.platforms.platforms,
+    platformMetadata: state.platforms.platformMetadata,
     loadingPlatforms: state.platforms.loading,
     platformsLoaded: state.platforms.loaded
   }),
@@ -15,26 +15,28 @@ import { Platform } from 'components';
 )
 @asyncConnect([{
   promise: ({store: {dispatch}}) => {
-    return dispatch(load());
+    return dispatch(loadPlatforms());
   }
 }])
 export default class Monitor extends Component {
   static propTypes = {
-    platforms: PropTypes.object,
-    loadingPlatforms: PropTypes.bool,
-    loadPlatforms: PropTypes.func,
+    platformMetadata: PropTypes.array,
     platformsLoaded: PropTypes.bool
   }
 
   render() {
     // const styles = require('./Monitor.scss');
-    const {platforms, platformsLoaded} = this.props;
+    const { platformMetadata, platformsLoaded } = this.props;
     let platformNodes;
 
     if (platformsLoaded) {
-      platformNodes = platforms.platforms.map((platform) => {
+      platformNodes = platformMetadata.map((platform) => {
         return (
-          <Platform name={platform.name} />
+          <Platform
+            key={platform.id}
+            name={platform.name}
+            id={platform.id}
+          />
         );
       });
     } else {

@@ -1,6 +1,6 @@
-const LOAD = 'redux-example/LOAD';
-const LOAD_SUCCESS = 'redux-example/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/LOAD_FAIL';
+const LOAD = 'blog/LOAD';
+const LOAD_SUCCESS = 'blog/LOAD_SUCCESS';
+const LOAD_FAIL = 'blog/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
@@ -15,11 +15,12 @@ export default function blog(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_SUCCESS:
+      console.log('BLOG success', action);
       return {
         ...state,
         loading: false,
         loaded: true,
-        blogPosts: action.result
+        blogPosts: action.result.posts
       };
     case LOAD_FAIL:
       return {
@@ -37,7 +38,7 @@ export function isLoaded(globalState) {
   return globalState.blog && globalState.blog.loaded;
 }
 
-export function load() {
+export function loadBlogs() {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/api/blog')

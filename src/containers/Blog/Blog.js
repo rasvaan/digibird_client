@@ -2,13 +2,13 @@ import React, {Component, PropTypes} from 'react';
 import {Banner, Footer} from 'components';
 import Helmet from 'react-helmet';
 import {connect} from 'react-redux';
-import {load} from '../../redux/modules/blog';
+import {loadBlogs} from '../../redux/modules/blog';
 import {BlogPost} from 'components';
 import { asyncConnect } from 'redux-connect';
 
 @connect(
   state => ({
-    blogPosts: state.blog.blogPosts.posts,
+    blogPosts: state.blog.blogPosts,
     loadingBlogs: state.blog.loading,
     blogsLoaded: state.blog.loaded
   }),
@@ -16,16 +16,15 @@ import { asyncConnect } from 'redux-connect';
 )
 @asyncConnect([{
   promise: ({store: {dispatch}}) => {
-    return dispatch(load());
+    return dispatch(loadBlogs());
   }
 }])
 export default class Blog extends Component {
   static propTypes = {
     blogPosts: PropTypes.array,
-    loadingBlogs: PropTypes.bool,
-    loadBlogs: PropTypes.func,
     blogsLoaded: PropTypes.bool
   }
+
   render() {
     const styles = require('./Blog.scss');
     const {blogPosts, blogsLoaded} = this.props;

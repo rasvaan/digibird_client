@@ -1,27 +1,30 @@
-const LOAD = 'redux-example/LOAD';
-const LOAD_SUCCESS = 'redux-example/LOAD_SUCCESS';
-const LOAD_FAIL = 'redux-example/LOAD_FAIL';
+const LOAD = 'platform/LOAD';
+const LOAD_SUCCESS = 'platform/LOAD_SUCCESS';
+const LOAD_FAIL = 'platform/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
-  platforms: {}
+  platformMetadata: []
 };
 
 export default function platforms(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
+      console.log('PLATFORM load', action);
       return {
         ...state,
         loading: true
       };
     case LOAD_SUCCESS:
+      console.log('PLATFORM success', action);
       return {
         ...state,
         loading: false,
         loaded: true,
-        platforms: action.result
+        platformMetadata: action.result.platforms
       };
     case LOAD_FAIL:
+      console.log('PLATFORM fail', action);
       return {
         ...state,
         loading: false,
@@ -37,7 +40,8 @@ export function isLoaded(globalState) {
   return globalState.platforms && globalState.platforms.loaded;
 }
 
-export function load() {
+export function loadPlatforms() {
+  console.log('load platforms');
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/api/platforms')
