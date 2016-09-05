@@ -1,46 +1,47 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
-import { loadPlatforms } from '../../redux/modules/platforms';
+import { loadMonitor } from '../../redux/modules/monitor';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { Platform } from 'components';
 
 @connect(
   state => ({
-    platformMetadata: state.platforms.platformMetadata,
-    loadingPlatforms: state.platforms.loading,
-    platformsLoaded: state.platforms.loaded
+    platforms: state.monitor.platforms,
+    loading: state.monitor.loading,
+    loaded: state.monitor.loaded
   }),
   {}
 )
 @asyncConnect([{
   promise: ({store: {dispatch}}) => {
-    return dispatch(loadPlatforms());
+    return dispatch(loadMonitor());
   }
 }])
 export default class Monitor extends Component {
   static propTypes = {
-    platformMetadata: PropTypes.array,
-    platformsLoaded: PropTypes.bool
+    platforms: PropTypes.array,
+    loaded: PropTypes.bool
   }
 
   render() {
     // const styles = require('./Monitor.scss');
-    const { platformMetadata, platformsLoaded } = this.props;
+    const { platforms, loaded } = this.props;
     let platformNodes;
 
-    if (platformsLoaded) {
-      platformNodes = platformMetadata.map((platform) => {
+    if (loaded) {
+      platformNodes = platforms.map((platform) => {
         return (
           <Platform
             key={platform.id}
             name={platform.name}
+            statistics={platform.statistics}
             id={platform.id}
           />
         );
       });
     } else {
-      platformNodes = <span>No platforms</span>;
+      platformNodes = <span>No platforms.</span>;
     }
 
     return (

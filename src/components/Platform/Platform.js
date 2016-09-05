@@ -1,41 +1,24 @@
 import React, { Component, PropTypes } from 'react';
-import { Statistic } from 'components';
-import { loadStatistics } from '../../redux/modules/statistics';
-import { connect } from 'react-redux';
-import { asyncConnect } from 'redux-connect';
 
-@connect(
-  state => ({
-    statistics: state.statistics.statistics,
-    statisticsLoaded: state.statistics.loaded
-  }),
-  {}
-)
-@asyncConnect([{
-  promise: ({store: {dispatch}}) => {
-    return dispatch(loadStatistics());
-  }
-}])
 export default class Platform extends Component {
   static propTypes = {
     name: PropTypes.string,
-    statistics: PropTypes.array,
-    statisticsLoaded: PropTypes.bool
+    statistics: PropTypes.array
   }
 
   render() {
     // const styles = require('./Platform.scss');
-    const { name, statistics, statisticsLoaded } = this.props;
+    const { name, statistics } = this.props;
     let statisticNodes;
-    console.log('STATISTICS', statistics);
-    if (statisticsLoaded) {
+
+    if (statistics.length === 0) {
+      console.log('should tell the people we got no statustuc');
+      statisticNodes = (<h5>No statistics available</h5>);
+    } else {
       statisticNodes = statistics.map((statistic) => {
         console.log(statistic);
-        return (<Statistic key={statistic} name={statistic} />);
+        return (<h5 key={statistic}>{statistic}</h5>);
       });
-      statisticNodes = <span>Statistics</span>;
-    } else {
-      statisticNodes = <span>No statistics</span>;
     }
 
     return (

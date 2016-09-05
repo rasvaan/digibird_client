@@ -1,13 +1,14 @@
-const LOAD = 'platform/LOAD';
-const LOAD_SUCCESS = 'platform/LOAD_SUCCESS';
-const LOAD_FAIL = 'platform/LOAD_FAIL';
+const LOAD = 'monitor/LOAD';
+const LOAD_SUCCESS = 'monitor/LOAD_SUCCESS';
+const LOAD_FAIL = 'monitor/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
-  platformMetadata: []
+  loading: false,
+  platforms: []
 };
 
-export default function platforms(state = initialState, action = {}) {
+export default function monitor(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
       console.log('PLATFORM load', action);
@@ -21,7 +22,7 @@ export default function platforms(state = initialState, action = {}) {
         ...state,
         loading: false,
         loaded: true,
-        platformMetadata: action.result.platforms
+        platforms: action.result.platforms
       };
     case LOAD_FAIL:
       console.log('PLATFORM fail', action);
@@ -36,11 +37,7 @@ export default function platforms(state = initialState, action = {}) {
   }
 }
 
-export function isLoaded(globalState) {
-  return globalState.platforms && globalState.platforms.loaded;
-}
-
-export function loadPlatforms() {
+export function loadMonitor() {
   console.log('load platforms');
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
