@@ -36,6 +36,7 @@ export default class Monitor extends Component {
             key={platform.id}
             name={platform.name}
             id={platform.id}
+            pollInterval={platform.poll_interval}
           />
         );
       });

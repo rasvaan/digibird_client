@@ -5,7 +5,8 @@ import request from 'superagent';
 export default class Platform extends Component {
   static propTypes = {
     name: PropTypes.string,
-    id: PropTypes.string
+    id: PropTypes.string,
+    pollInterval: PropTypes.number
   }
   constructor(props) {
     super(props);
@@ -13,7 +14,10 @@ export default class Platform extends Component {
   }
   componentDidMount() {
     this.loadStatisticsFromServer();
-    // setInterval(this.loadStatisticsFromServer, this.props.pollInterval);
+    setInterval(
+      this.loadStatisticsFromServer.bind(this),
+      this.props.pollInterval
+    );
   }
   loadStatisticsFromServer() {
     const url = `/api/statistics?platform=${this.props.id}`;
