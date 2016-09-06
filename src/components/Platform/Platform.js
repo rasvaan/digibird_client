@@ -14,10 +14,13 @@ export default class Platform extends Component {
   }
   componentDidMount() {
     this.loadStatisticsFromServer();
-    setInterval(
+    this.intervalId = setInterval(
       this.loadStatisticsFromServer.bind(this),
       this.props.pollInterval
     );
+  }
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
   }
   loadStatisticsFromServer() {
     const url = `/api/statistics?platform=${this.props.id}`;

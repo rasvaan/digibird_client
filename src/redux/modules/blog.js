@@ -15,7 +15,6 @@ export default function blog(state = initialState, action = {}) {
         loading: true
       };
     case LOAD_SUCCESS:
-      console.log('BLOG success', action);
       return {
         ...state,
         loading: false,

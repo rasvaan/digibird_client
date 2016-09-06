@@ -11,13 +11,11 @@ const initialState = {
 export default function monitor(state = initialState, action = {}) {
   switch (action.type) {
     case LOAD:
-      console.log('PLATFORM load', action);
       return {
         ...state,
         loading: true
       };
     case LOAD_SUCCESS:
-      console.log('PLATFORM success', action);
       return {
         ...state,
         loading: false,
@@ -25,7 +23,6 @@ export default function monitor(state = initialState, action = {}) {
         platforms: action.result.platforms
       };
     case LOAD_FAIL:
-      console.log('PLATFORM fail', action);
       return {
         ...state,
         loading: false,
@@ -38,7 +35,6 @@ export default function monitor(state = initialState, action = {}) {
 }
 
 export function loadMonitor() {
-  console.log('load platforms');
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     promise: (client) => client.get('/api/platforms')
