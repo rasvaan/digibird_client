@@ -1,13 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 
 export default class Statistic extends Component {
+  static propTypes = {
+    type: PropTypes.string,
+    value: PropTypes.string
+  }
 
   render() {
+    const { type, value } = this.props;
+
     return (
       <h4 className="statistic">
-        {'value'}
+        {type}
         <span> </span>
-        {'type'}
+        {value}
       </h4>
     );
   }

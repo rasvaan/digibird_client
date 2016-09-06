@@ -1,10 +1,10 @@
 const LOAD = 'statistics/LOAD';
 const LOAD_SUCCESS = 'statistics/LOAD_SUCCESS';
 const LOAD_FAIL = 'statistics/LOAD_FAIL';
+const TEST = 'statistics/TEST';
 
 const initialState = {
-  loaded: false,
-  statistics: []
+  loaded: false
 };
 
 export default function statistics(state = initialState, action = {}) {
@@ -36,14 +36,18 @@ export default function statistics(state = initialState, action = {}) {
   }
 }
 
-export function isLoaded(globalState) {
-  return globalState.statistics && globalState.statistics.loaded;
-}
+export function loadStatistics(platform, statistic) {
+  const url = `/api/statistics?platform=${platform}&statistic=${statistic}`;
+  console.log('DA URL', url);
 
-export function loadStatistics() {
-  console.log('load statistics');
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
-    promise: (client) => client.get('/api/statistics?platform=xeno-canto')
+    promise: (client) => client.get(url)
+  };
+}
+
+export function test() {
+  return {
+    type: TEST
   };
 }

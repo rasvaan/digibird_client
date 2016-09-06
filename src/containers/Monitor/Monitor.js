@@ -35,7 +35,6 @@ export default class Monitor extends Component {
           <Platform
             key={platform.id}
             name={platform.name}
-            statistics={platform.statistics}
             id={platform.id}
           />
         );

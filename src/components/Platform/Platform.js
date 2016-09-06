@@ -1,23 +1,49 @@
 import React, { Component, PropTypes } from 'react';
+import { Statistic } from 'components';
+import request from 'superagent';
 
 export default class Platform extends Component {
   static propTypes = {
     name: PropTypes.string,
-    statistics: PropTypes.array
+    id: PropTypes.string
   }
+  constructor(props) {
+    super(props);
+    this.state = {statistics: []};
+  }
+  componentDidMount() {
+    this.loadStatisticsFromServer();
+    // setInterval(this.loadStatisticsFromServer, this.props.pollInterval);
+  }
+  loadStatisticsFromServer() {
+    const url = `/api/statistics?platform=${this.props.id}`;
 
+    request
+    .get(url)
+    .end((err, res) => {
+      if (err) {
+        console.error(`API error`, status, err.toString());
+      } else {
+        this.setState({statistics: res.body.statistics});
+      }
+    });
+  }
   render() {
     // const styles = require('./Platform.scss');
-    const { name, statistics } = this.props;
+    const { name } = this.props;
     let statisticNodes;
 
-    if (statistics.length === 0) {
-      console.log('should tell the people we got no statustuc');
-      statisticNodes = (<h5>No statistics available</h5>);
+    if (this.state.statistics.length === 0) {
+      statisticNodes = (<h4>No statistics available</h4>);
     } else {
-      statisticNodes = statistics.map((statistic) => {
-        console.log(statistic);
-        return (<h5 key={statistic}>{statistic}</h5>);
+      statisticNodes = this.state.statistics.map((statistic) => {
+        return (
+          <Statistic
+            key={statistic.type}
+            type={statistic.type}
+            value={statistic.value}
+          />
+        );
       });
     }
 
