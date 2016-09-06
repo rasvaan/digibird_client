@@ -3,7 +3,7 @@ import Helmet from 'react-helmet';
 import { loadMonitor } from '../../redux/modules/monitor';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import { Platform } from 'components';
+import { Platform, Banner, Footer } from 'components';
 
 @connect(
   state => ({
@@ -47,9 +47,11 @@ export default class Monitor extends Component {
     return (
       <div>
         <Helmet title="Monitor"/>
+        <Banner title="Statistics monitor" image="error" />
         <div className="container">
           {platformNodes}
         </div>
+        <Footer />
       </div>
     );
   }
