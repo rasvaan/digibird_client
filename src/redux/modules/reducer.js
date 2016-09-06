@@ -9,6 +9,5 @@ export default combineReducers({
   routing: routerReducer,
   reduxAsyncConnect,
   blog,
-  monitor,
-  statistics
+  monitor
 });
