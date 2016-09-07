@@ -11,11 +11,11 @@ export default class Banner extends Component {
 
     return (
       <div className={styles.banner}>
+          <img className="img-responsive" src={'img/banners/' + this.props.image + '.jpg'} />
           <div className={styles.text}>
               <p className={styles.title}>{this.props.title}</p>
           </div>
           <div className={styles.copyright}>De menagerie, Melchior d'Hondecoeter, Rijksmuseum</div>
-          <img className="img-responsive" src={'img/banners/' + this.props.image + '.jpg'} />
       </div>
     );
   }
