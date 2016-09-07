@@ -4,7 +4,8 @@ const LOAD_FAIL = 'blog/LOAD_FAIL';
 
 const initialState = {
   loaded: false,
-  blogPosts: {}
+  loading: false,
+  blogPosts: []
 };
 
 export default function blog(state = initialState, action = {}) {

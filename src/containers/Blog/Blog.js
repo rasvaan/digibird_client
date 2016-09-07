@@ -9,8 +9,8 @@ import { asyncConnect } from 'redux-connect';
 @connect(
   state => ({
     blogPosts: state.blog.blogPosts,
-    loadingBlogs: state.blog.loading,
-    blogsLoaded: state.blog.loaded
+    loading: state.blog.loading,
+    loaded: state.blog.loaded
   }),
   {}
 )
@@ -22,26 +22,45 @@ import { asyncConnect } from 'redux-connect';
 export default class Blog extends Component {
   static propTypes = {
     blogPosts: PropTypes.array,
-    blogsLoaded: PropTypes.bool
+    loaded: PropTypes.bool,
+    loading: PropTypes.bool
   }
 
   render() {
     const styles = require('./Blog.scss');
-    const {blogPosts, blogsLoaded} = this.props;
+    const {blogPosts, loaded, loading} = this.props;
+    let blogPostNodes;
+
+    if (loaded) {
+      blogPostNodes = blogPosts.map((post) => {
+        return (
+          <BlogPost title={post.title} link={post.link} date={post.date} content={post.content} key={post.id} />
+        );
+      });
+    } else if (loading) {
+      blogPostNodes = (
+        <div className="row">
+          <div className="col-sm-8 col-sm-offset-2">
+            <h3>Loading blog posts</h3>
+          </div>
+        </div>
+      );
+    } else if (!loading && !loaded) {
+      blogPostNodes = (
+        <div className="row">
+          <div className="col-sm-8 col-sm-offset-2">
+            <h3>Unable to load blog posts</h3>
+          </div>
+        </div>
+      );
+    }
 
     return (
       <div>
         <Helmet title="Blog"/>
         <Banner title="Blog" image="blog" />
         <div className={`${styles.blog} container`}>
-          {(blogsLoaded ?
-             blogPosts.map((post) => {
-               return (
-                 <BlogPost title={post.title} link={post.link} date={post.date} content={post.content} key={post.id} />
-               );
-             })
-            : <span>No Blog posts</span>
-          )}
+          {blogPostNodes}
         </div>
         <Footer />
       </div>

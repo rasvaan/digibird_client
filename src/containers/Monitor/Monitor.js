@@ -21,12 +21,13 @@ import { Platform, Banner, Footer } from 'components';
 export default class Monitor extends Component {
   static propTypes = {
     platforms: PropTypes.array,
+    loading: PropTypes.bool,
     loaded: PropTypes.bool
   }
 
   render() {
     // const styles = require('./Monitor.scss');
-    const { platforms, loaded } = this.props;
+    const { platforms, loading, loaded } = this.props;
     let platformNodes;
 
     if (loaded) {
@@ -40,8 +41,22 @@ export default class Monitor extends Component {
           />
         );
       });
-    } else {
-      platformNodes = <span>No platforms.</span>;
+    } else if (loading) {
+      platformNodes = (
+        <div className="row">
+          <div className="col-sm-8 col-sm-offset-2">
+            <h3>Loading statistics</h3>
+          </div>
+        </div>
+      );
+    } else if (!loading && !loaded) {
+      platformNodes = (
+        <div className="row">
+          <div className="col-sm-8 col-sm-offset-2">
+            <h3>Unable to load statistics</h3>
+          </div>
+        </div>
+      );
     }
 
     return (
