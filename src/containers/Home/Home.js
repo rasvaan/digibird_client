@@ -50,34 +50,34 @@ export default class Home extends Component {
             </div>
           </div>
 
-          <div className={`${styles.logoContainer} row`}>
-            <div className={`${styles.logo} col-xs-6 col-sm-2`}>
+          <div className="row">
+            <div className={`${styles.logoDiv} col-xs-6 col-sm-2`}>
               <a href="http://www.beeldengeluid.nl/en">
-                <img src="img/logos/sound_and_vision.png" className="img-responsive">
+                <img src="img/logos/sound_and_vision.png" className={`${styles.logo} img-responsive`}>
                 </img>
               </a>
             </div>
-            <div className={`${styles.logo} col-xs-6 col-sm-2`}>
+            <div className={`${styles.logoDiv} col-xs-6 col-sm-2`}>
               <a href="https://www.rijksmuseum.nl/en">
-                <img src="img/logos/rijksmuseum.png" className={`${styles.rijksmuseumLogo} img-responsive`}>
+                <img src="img/logos/rijksmuseum.png" className={`${styles.logo} ${styles.rijksmuseumLogo} img-responsive`}>
                 </img>
               </a>
             </div>
-            <div className={`${styles.logo} col-xs-6 col-sm-2`}>
+            <div className={`${styles.logoDiv} col-xs-6 col-sm-2`}>
               <a href="http://www.naturalis.nl/en/">
-                <img src="img/logos/naturalis.png" className={`${styles.naturalisLogo} img-responsive`}>
+                <img src="img/logos/naturalis.png" className={`${styles.logo} ${styles.naturalisLogo} img-responsive`}>
                 </img>
               </a>
             </div>
-            <div className={`${styles.logo} col-xs-6 col-sm-2`}>
+            <div className={`${styles.logoDiv} col-xs-6 col-sm-2`}>
               <a href="http://vu.nl/en/">
-                <img src="img/logos/vu.png" className={`${styles.vuLogo} img-responsive`}>
+                <img src="img/logos/vu.png" className={`${styles.logo} ${styles.vuLogo} img-responsive`}>
                 </img>
               </a>
             </div>
-            <div className={`${styles.logo} col-xs-6 col-sm-2`}>
+            <div className={`${styles.logoDiv} col-xs-6 col-sm-2`}>
               <a href="http://www.xeno-canto.org">
-                <img src="img/logos/xeno-canto.png" className="img-responsive">
+                <img src="img/logos/xeno-canto.png" className={`${styles.logo} img-responsive`}>
                 </img>
               </a>
             </div>

@@ -27,15 +27,17 @@ CSS Styling for Landing page
 	width: 100%;
 }
 
-.logoContainer {
-	padding-top: 25px;
-  padding-bottom: 25px;
-}
-
-.logo {
+.logoDiv {
+  margin-top: 20px;
+  margin-bottom: 20px;
 	display: inline-block;
-	vertical-align: middle;
+  vertical-align: middle;
 	float: none;
+  .logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .vuLogo {
