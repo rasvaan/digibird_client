@@ -8,11 +8,14 @@
     width: 100%;
     display: block;
   }
-  .brand {
+  .brandLink {
     position: absolute;
-    top: 5px;
-    left: 20px;
+    display: block;
+    bottom: 10px;
+  }
+  .brand {
+    position: relative;
     width: 110px;
-    margin: 5px 5px 0 0;
+    pointer-events: none;
   }
 }

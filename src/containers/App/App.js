@@ -26,7 +26,7 @@ export default class App extends Component {
         <Navbar fixedTop inverse className={styles.navbar}>
           <Navbar.Header>
             <Navbar.Brand>
-              <IndexLink to="/">
+              <IndexLink className={styles.brandLink} to="/">
                 <object className={styles.brand} type="image/svg+xml" data="img/logos/digibird-inverted.svg">
                 </object>
               </IndexLink>
