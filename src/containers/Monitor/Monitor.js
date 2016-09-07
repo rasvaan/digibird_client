@@ -26,7 +26,7 @@ export default class Monitor extends Component {
   }
 
   render() {
-    // const styles = require('./Monitor.scss');
+    const styles = require('./Monitor.scss');
     const { platforms, loading, loaded } = this.props;
     let platformNodes;
 
@@ -63,7 +63,7 @@ export default class Monitor extends Component {
       <div>
         <Helmet title="Monitor"/>
         <Banner title="Statistics monitor" image="error" />
-        <div className="container">
+        <div className={`${styles.monitor} container`}>
           {platformNodes}
         </div>
         <Footer />

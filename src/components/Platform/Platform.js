@@ -36,7 +36,7 @@ export default class Platform extends Component {
     });
   }
   render() {
-    // const styles = require('./Platform.scss');
+    const styles = require('./Platform.scss');
     const { name } = this.props;
     let statisticNodes;
 
@@ -55,8 +55,8 @@ export default class Platform extends Component {
     }
 
     return (
-      <div className="platform col-sm-6 col-md-4">
-        <h3>Statistics {name}</h3>
+      <div className={`${styles.platform} col-sm-6 col-md-4`}>
+        <h3 className={styles.platformHeader}>Statistics {name}</h3>
         {statisticNodes}
       </div>
     );
