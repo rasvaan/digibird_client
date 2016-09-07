@@ -27,7 +27,8 @@ export default class App extends Component {
           <Navbar.Header>
             <Navbar.Brand>
               <IndexLink to="/">
-                <div className={styles.brand} />
+                <object className={styles.brand} type="image/svg+xml" data="img/logos/digibird-inverted.svg">
+                </object>
               </IndexLink>
             </Navbar.Brand>
             <Navbar.Toggle/>
