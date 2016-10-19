@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import { Image } from 'components';
+import { Image, Metadata } from 'components';
 
 export default class Media extends Component {
   static propTypes = {
@@ -15,7 +15,7 @@ export default class Media extends Component {
           <Image url="https://upload.wikimedia.org/wikipedia/commons/c/c5/Selfoss_July_2014.JPG"/>
         </div>
         <div className="col-md-4">
-          interesting metadata
+          <Metadata title="Interesting stuff" />
         </div>
       </div>
     );
