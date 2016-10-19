@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import { Image } from 'components';
 
 export default class Media extends Component {
   static propTypes = {
@@ -11,10 +12,10 @@ export default class Media extends Component {
     return (
       <div className={`row ${styles[this.props.color]}`}>
         <div className="col-md-8">
-          pretty media with horrendous background colors!
+          <Image url="https://upload.wikimedia.org/wikipedia/commons/c/c5/Selfoss_July_2014.JPG"/>
         </div>
         <div className="col-md-4">
-          Interesting metadata
+          interesting metadata
         </div>
       </div>
     );
