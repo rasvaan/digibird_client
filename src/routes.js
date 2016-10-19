@@ -6,6 +6,7 @@ import {
     Blog,
     Home,
     People,
+    Species,
     NotFound,
   } from 'containers';
 
@@ -22,6 +23,7 @@ export default () => {
       <Route path="blog" component={Blog}/>
       <Route path="monitor" component={Monitor}/>
       <Route path="people" component={People}/>
+      <Route path="species" component={Species}/>
 
       { /* Catch all route */ }
       <Route path="*" component={NotFound} status={404} />
