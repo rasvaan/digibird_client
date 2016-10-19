@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Footer } from 'components';
+import { Media } from 'components';
 import Helmet from 'react-helmet';
 
 export default class Species extends Component {
@@ -9,8 +9,11 @@ export default class Species extends Component {
     return (
       <div>
         <Helmet title="Species"/>
-        <p className={styles.fancy}>Very fancy species page</p>
-        <Footer />
+        <div className="container">
+          <p className={styles.fancy}>Very fancy species page</p>
+          <Media color="orange"/>
+          <Media color="red"/>
+        </div>
       </div>
     );
   }
