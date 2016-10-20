@@ -17,7 +17,15 @@ import Helmet from 'react-helmet';
 @asyncConnect([{
   promise: ({store: {dispatch}}) => {
     return dispatch(loadObjects('soortenregister'));
-  }
+  },
+}, {
+  promise: ({store: {dispatch}}) => {
+    return dispatch(loadObjects('xeno-canto'));
+  },
+}, {
+  promise: ({store: {dispatch}}) => {
+    return dispatch(loadObjects('rijksmuseum'));
+  },
 }])
 export default class Species extends Component {
   static propTypes = {
