@@ -17,21 +17,15 @@ import Helmet from 'react-helmet';
 )
 @asyncConnect([
   {
-    promise: ({store: {dispatch}}) => {
-    // promise: ({store: {dispatch, getState}}) => {
-      // const query = getState().routing.locationBeforeTransitions.query;
-      // console.log('query nsr', query);
-      // return dispatch(loadObjects('soortenregister', query));
-      return dispatch(loadObjects('soortenregister'));
+    promise: ({store: {dispatch, getState}}) => {
+      const query = getState().routing.locationBeforeTransitions.query;
+      return dispatch(loadObjects('soortenregister', query));
     },
   },
   {
-    promise: ({store: {dispatch}}) => {
-    // promise: ({store: {dispatch, getState}}) => {
-      // const query = getState().routing.locationBeforeTransitions.query;
-      // console.log('query xc', query);
-      // return dispatch(loadObjects('xeno-canto', query));
-      return dispatch(loadObjects('xeno-canto'));
+    promise: ({store: {dispatch, getState}}) => {
+      const query = getState().routing.locationBeforeTransitions.query;
+      return dispatch(loadObjects('xeno-canto', query));
     },
   },
 ])
@@ -44,10 +38,8 @@ export default class Species extends Component {
     loadObjects: PropTypes.func
   }
   componentWillMount() {
-    // const { query } = this.props;
-    // console.log('query rijks', query);
-    // this.props.loadObjects('rijksmuseum', query);
-    this.props.loadObjects('rijksmuseum');
+    const { query } = this.props;
+    this.props.loadObjects('rijksmuseum', query);
   }
   render() {
     const styles = require('./Species.scss');
