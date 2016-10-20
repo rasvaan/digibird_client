@@ -47,17 +47,16 @@ export default class Species extends Component {
     let nsrNodes;
 
     if (nsrLoaded) {
-      const object = nsrResults['@graph'][0]['edm:aggregatedCHO'];
-      const resource = nsrResults['@graph'][0]['edm:isShownBy'];
-
-      nsrNodes = (
-        <Media
-          url={resource['@id']}
-          type={resource['dcterms:type']}
-          title={object['@id']}
-          color="red"
-        />
-      );
+      nsrNodes = nsrResults['@graph'].map((result) => {
+        return (
+          <Media
+            url={result['edm:isShownBy']['@id']}
+            type={result['edm:isShownBy']['dcterms:type']}
+            title={result['edm:aggregatedCHO']['@id']}
+            color="red"
+          />
+        );
+      });
     }
 
     return (
