@@ -2,21 +2,21 @@ import React, { Component, PropTypes } from 'react';
 import { Media } from 'components';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import { loadNsr } from '../../redux/modules/nsr';
+import { loadObjects } from '../../redux/modules/objects';
 import Helmet from 'react-helmet';
 
 
 @connect(
   state => ({
-    nsrResults: state.nsr.results,
-    nsrLoading: state.nsr.loading,
-    nsrLoaded: state.nsr.loaded
+    nsrResults: state.objects.soortenregister.results,
+    nsrLoading: state.objects.soortenregister.loading,
+    nsrLoaded: state.objects.soortenregister.loaded
   }),
   {}
 )
 @asyncConnect([{
   promise: ({store: {dispatch}}) => {
-    return dispatch(loadNsr());
+    return dispatch(loadObjects('soortenregister'));
   }
 }])
 export default class Species extends Component {
@@ -25,7 +25,6 @@ export default class Species extends Component {
     nsrLoaded: PropTypes.bool,
     nsrLoading: PropTypes.bool
   }
-
   render() {
     const styles = require('./Species.scss');
     const { nsrResults, nsrLoaded } = this.props;
