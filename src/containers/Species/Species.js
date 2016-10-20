@@ -10,28 +10,44 @@ import Helmet from 'react-helmet';
   state => ({
     nsrResults: state.objects.soortenregister.results,
     nsrLoading: state.objects.soortenregister.loading,
-    nsrLoaded: state.objects.soortenregister.loaded
+    nsrLoaded: state.objects.soortenregister.loaded,
+    query: state.routing.locationBeforeTransitions.query
   }),
-  {}
+  {loadObjects}
 )
-@asyncConnect([{
-  promise: ({store: {dispatch}}) => {
-    return dispatch(loadObjects('soortenregister'));
+@asyncConnect([
+  {
+    promise: ({store: {dispatch}}) => {
+    // promise: ({store: {dispatch, getState}}) => {
+      // const query = getState().routing.locationBeforeTransitions.query;
+      // console.log('query nsr', query);
+      // return dispatch(loadObjects('soortenregister', query));
+      return dispatch(loadObjects('soortenregister'));
+    },
   },
-}, {
-  promise: ({store: {dispatch}}) => {
-    return dispatch(loadObjects('xeno-canto'));
+  {
+    promise: ({store: {dispatch}}) => {
+    // promise: ({store: {dispatch, getState}}) => {
+      // const query = getState().routing.locationBeforeTransitions.query;
+      // console.log('query xc', query);
+      // return dispatch(loadObjects('xeno-canto', query));
+      return dispatch(loadObjects('xeno-canto'));
+    },
   },
-}, {
-  promise: ({store: {dispatch}}) => {
-    return dispatch(loadObjects('rijksmuseum'));
-  },
-}])
+])
 export default class Species extends Component {
   static propTypes = {
     nsrResults: PropTypes.object,
     nsrLoaded: PropTypes.bool,
-    nsrLoading: PropTypes.bool
+    nsrLoading: PropTypes.bool,
+    query: PropTypes.object,
+    loadObjects: PropTypes.func
+  }
+  componentWillMount() {
+    // const { query } = this.props;
+    // console.log('query rijks', query);
+    // this.props.loadObjects('rijksmuseum', query);
+    this.props.loadObjects('rijksmuseum');
   }
   render() {
     const styles = require('./Species.scss');
