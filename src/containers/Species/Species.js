@@ -53,6 +53,45 @@ export default class Species extends Component {
     const { query } = this.props;
     this.props.loadObjects('rijksmuseum', query);
   }
+  soortenRegisterNodes(nsrResults) {
+    return nsrResults['@graph'].map((result) => {
+      return (
+        <Media
+          key={result['edm:aggregatedCHO']['@id']}
+          url={result['edm:isShownBy']['@id']}
+          type={result['edm:isShownBy']['dcterms:type']}
+          title={result['edm:aggregatedCHO']['@id']}
+          color="red"
+        />
+      );
+    });
+  }
+  xenoCantoNodes(xcResults) {
+    return xcResults['@graph'].map((result) => {
+      return (
+        <Media
+          key={result['edm:aggregatedCHO']['@id']}
+          url={result['edm:isShownBy']['@id']}
+          type={result['edm:isShownBy']['dcterms:type']}
+          title={result['edm:aggregatedCHO']['@id']}
+          color="orange"
+        />
+      );
+    });
+  }
+  rijksmuseumNodes(rmaResults) {
+    return rmaResults['@graph'].map((result) => {
+      return (
+        <Media
+          key={result['edm:aggregatedCHO']['@id']}
+          url={result['edm:isShownBy']['@id']}
+          type={result['edm:isShownBy']['dcterms:type']}
+          title={result['edm:aggregatedCHO']['@id']}
+          color="red"
+        />
+      );
+    });
+  }
   render() {
     const styles = require('./Species.scss');
     const { nsrResults, nsrLoaded, xcResults, xcLoaded, rmaResults, rmaLoaded } = this.props;
@@ -60,47 +99,9 @@ export default class Species extends Component {
     let xcNodes;
     let rmaNodes;
 
-    if (nsrLoaded) {
-      nsrNodes = nsrResults['@graph'].map((result) => {
-        return (
-          <Media
-            key={result['edm:aggregatedCHO']['@id']}
-            url={result['edm:isShownBy']['@id']}
-            type={result['edm:isShownBy']['dcterms:type']}
-            title={result['edm:aggregatedCHO']['@id']}
-            color="red"
-          />
-        );
-      });
-    }
-
-    if (xcLoaded) {
-      xcNodes = xcResults['@graph'].map((result) => {
-        return (
-          <Media
-            key={result['edm:aggregatedCHO']['@id']}
-            url={result['edm:isShownBy']['@id']}
-            type={result['edm:isShownBy']['dcterms:type']}
-            title={result['edm:aggregatedCHO']['@id']}
-            color="orange"
-          />
-        );
-      });
-    }
-
-    if (rmaLoaded) {
-      rmaNodes = rmaResults['@graph'].map((result) => {
-        return (
-          <Media
-            key={result['edm:aggregatedCHO']['@id']}
-            url={result['edm:isShownBy']['@id']}
-            type={result['edm:isShownBy']['dcterms:type']}
-            title={result['edm:aggregatedCHO']['@id']}
-            color="red"
-          />
-        );
-      });
-    }
+    if (nsrLoaded) nsrNodes = this.soortenRegisterNodes(nsrResults);
+    if (xcLoaded) xcNodes = this.xenoCantoNodes(xcResults);
+    if (rmaLoaded) rmaNodes = this.rijksmuseumNodes(rmaResults);
 
     return (
       <div>
