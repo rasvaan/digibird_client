@@ -30,8 +30,8 @@ export default class Media extends Component {
     const media = this.mediaComponent(type, url);
 
     return (
-      <div className={`row ${styles[color]}`}>
-        <div className="col-md-8">
+      <div className={`row ${styles[color]}  ${styles.noGutter}`}>
+        <div className={`col-md-8 ${styles.noPadding}`}>
           {media}
         </div>
         <div className="col-md-4">

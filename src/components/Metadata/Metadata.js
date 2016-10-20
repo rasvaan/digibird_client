@@ -12,10 +12,6 @@ export default class Metadata extends Component {
     return (
       <div className={styles.metadata}>
         <h1 className={styles.title}>{title}</h1>
-        <ul>
-          <li>yawn</li>
-          <li>another waterfall</li>
-        </ul>
       </div>
     );
   }

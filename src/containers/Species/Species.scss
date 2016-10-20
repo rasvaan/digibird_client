@@ -1,6 +1,13 @@
 /*******************************************************************************
 CSS styling for Species page
 *******************************************************************************/
-.fancy {
-  color: red;
+.noGutter {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.noPadding {
+   padding-left: 0;
+   padding-right: 0;
+   overflow: hidden;
 }

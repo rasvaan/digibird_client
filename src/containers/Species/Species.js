@@ -28,12 +28,12 @@ import Helmet from 'react-helmet';
       return dispatch(loadObjects('soortenregister', query));
     },
   },
-  {
-    promise: ({store: {dispatch, getState}}) => {
-      const query = getState().routing.locationBeforeTransitions.query;
-      return dispatch(loadObjects('xeno-canto', query));
-    },
-  },
+  // {
+  //   promise: ({store: {dispatch, getState}}) => {
+  //     const query = getState().routing.locationBeforeTransitions.query;
+  //     return dispatch(loadObjects('xeno-canto', query));
+  //   },
+  // },
 ])
 export default class Species extends Component {
   static propTypes = {
@@ -50,8 +50,8 @@ export default class Species extends Component {
     loadObjects: PropTypes.func
   }
   componentWillMount() {
-    const { query } = this.props;
-    this.props.loadObjects('rijksmuseum', query);
+    // const { query } = this.props;
+    // this.props.loadObjects('rijksmuseum', query);
   }
   soortenRegisterNodes(nsrResults) {
     return nsrResults['@graph'].map((result) => {
@@ -61,7 +61,7 @@ export default class Species extends Component {
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['@id']}
-          color="red"
+          color="color1"
         />
       );
     });
@@ -74,7 +74,7 @@ export default class Species extends Component {
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['@id']}
-          color="orange"
+          color="color2"
         />
       );
     });
@@ -87,7 +87,7 @@ export default class Species extends Component {
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['@id']}
-          color="red"
+          color="color3"
         />
       );
     });
@@ -106,8 +106,7 @@ export default class Species extends Component {
     return (
       <div>
         <Helmet title="Species"/>
-        <div className="container">
-          <p className={styles.fancy}>Very fancy species page</p>
+        <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
           {nsrNodes}
           {xcNodes}
           {rmaNodes}
