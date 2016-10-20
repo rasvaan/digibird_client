@@ -11,6 +11,12 @@ import Helmet from 'react-helmet';
     nsrResults: state.objects.soortenregister.results,
     nsrLoading: state.objects.soortenregister.loading,
     nsrLoaded: state.objects.soortenregister.loaded,
+    xcResults: state.objects['xeno-canto'].results,
+    xcLoading: state.objects['xeno-canto'].loading,
+    xcLoaded: state.objects['xeno-canto'].loaded,
+    rmaResults: state.objects.rijksmuseum.results,
+    rmaLoading: state.objects.rijksmuseum.loading,
+    rmaLoaded: state.objects.rijksmuseum.loaded,
     query: state.routing.locationBeforeTransitions.query
   }),
   {loadObjects}
@@ -34,6 +40,12 @@ export default class Species extends Component {
     nsrResults: PropTypes.object,
     nsrLoaded: PropTypes.bool,
     nsrLoading: PropTypes.bool,
+    xcResults: PropTypes.object,
+    xcLoaded: PropTypes.bool,
+    xcLoading: PropTypes.bool,
+    rmaResults: PropTypes.object,
+    rmaLoaded: PropTypes.bool,
+    rmaLoading: PropTypes.bool,
     query: PropTypes.object,
     loadObjects: PropTypes.func
   }
@@ -43,13 +55,44 @@ export default class Species extends Component {
   }
   render() {
     const styles = require('./Species.scss');
-    const { nsrResults, nsrLoaded } = this.props;
+    const { nsrResults, nsrLoaded, xcResults, xcLoaded, rmaResults, rmaLoaded } = this.props;
     let nsrNodes;
+    let xcNodes;
+    let rmaNodes;
 
     if (nsrLoaded) {
       nsrNodes = nsrResults['@graph'].map((result) => {
         return (
           <Media
+            key={result['edm:aggregatedCHO']['@id']}
+            url={result['edm:isShownBy']['@id']}
+            type={result['edm:isShownBy']['dcterms:type']}
+            title={result['edm:aggregatedCHO']['@id']}
+            color="red"
+          />
+        );
+      });
+    }
+
+    if (xcLoaded) {
+      xcNodes = xcResults['@graph'].map((result) => {
+        return (
+          <Media
+            key={result['edm:aggregatedCHO']['@id']}
+            url={result['edm:isShownBy']['@id']}
+            type={result['edm:isShownBy']['dcterms:type']}
+            title={result['edm:aggregatedCHO']['@id']}
+            color="orange"
+          />
+        );
+      });
+    }
+
+    if (rmaLoaded) {
+      rmaNodes = rmaResults['@graph'].map((result) => {
+        return (
+          <Media
+            key={result['edm:aggregatedCHO']['@id']}
             url={result['edm:isShownBy']['@id']}
             type={result['edm:isShownBy']['dcterms:type']}
             title={result['edm:aggregatedCHO']['@id']}
@@ -65,6 +108,8 @@ export default class Species extends Component {
         <div className="container">
           <p className={styles.fancy}>Very fancy species page</p>
           {nsrNodes}
+          {xcNodes}
+          {rmaNodes}
         </div>
       </div>
     );

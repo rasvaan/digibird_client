@@ -3,9 +3,21 @@ const LOAD_SUCCESS = 'objects/LOAD_SUCCESS';
 const LOAD_FAIL = 'objects/LOAD_FAIL';
 
 const initialState = {
-  // loaded: false,
-  // loading: false,
-  // platforms: {}
+  soortenregister: {
+    loaded: false,
+    loading: false,
+    results: {}
+  },
+  'xeno-canto': {
+    loaded: false,
+    loading: false,
+    results: {}
+  },
+  rijksmuseum: {
+    loaded: false,
+    loading: false,
+    results: {}
+  }
 };
 
 export default function objects(state = initialState, action = {}) {
