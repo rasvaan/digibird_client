@@ -28,18 +28,18 @@ export default class Species extends Component {
 
   render() {
     const styles = require('./Species.scss');
-    const { nsrResults, nsrLoaded, nsrLoading } = this.props;
+    const { nsrResults, nsrLoaded } = this.props;
     let nsrNodes;
-    console.log(nsrResults, nsrLoaded, nsrLoading);
 
     if (nsrLoaded) {
-      const result = nsrResults['@graph'][0];
-      console.log('cho', result['edm:aggregatedCHO']['@id']);
-      console.log('shown', result['edm:isShownBy']['@id']);
+      const object = nsrResults['@graph'][0]['edm:aggregatedCHO'];
+      const resource = nsrResults['@graph'][0]['edm:isShownBy'];
+
       nsrNodes = (
         <Media
-          url={result['edm:isShownBy']['@id']}
-          title={result['edm:aggregatedCHO']['@id']}
+          url={resource['@id']}
+          type={resource['dcterms:type']}
+          title={object['@id']}
           color="red"
         />
       );
