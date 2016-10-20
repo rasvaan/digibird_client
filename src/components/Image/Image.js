@@ -11,6 +11,3 @@ export default class Image extends Component {
     );
   }
 }
-// <img href={this.propTypes.url} className="img-responsive">
-//
-// </img>
