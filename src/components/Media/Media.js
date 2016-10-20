@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import { Sound, Image, Metadata } from 'components';
+import { Sound, Image, Video, Metadata } from 'components';
 
 export default class Media extends Component {
   static propTypes = {
@@ -17,10 +17,10 @@ export default class Media extends Component {
         return <Sound url={url} />;
       }
       case 'dctype:MovingImage': {
-        return <Image url={url} />;
+        return <Video url={url} />;
       }
       default: {
-        return <Image url={url} />;
+        return <p>unknown media type</p>;
       }
     }
   }
