@@ -6,8 +6,10 @@ export default class Image extends Component {
   }
 
   render() {
+    const styles = require('./Image.scss');
+
     return (
-      <img src={this.props.url} className="img-responsive"></img>
+      <img src={this.props.url} className={`img-responsive ${styles.image}`}></img>
     );
   }
 }

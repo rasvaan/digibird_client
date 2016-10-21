@@ -11,7 +11,7 @@ export default class Metadata extends Component {
 
     return (
       <div className={styles.metadata}>
-        <h1 className={styles.title}>{title}</h1>
+        <h1>{title}</h1>
       </div>
     );
   }
