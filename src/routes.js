@@ -7,6 +7,7 @@ import {
     Home,
     People,
     Species,
+    Annotations,
     NotFound,
   } from 'containers';
 
@@ -20,6 +21,7 @@ export default () => {
       <IndexRoute component={Home}/>
 
       { /* Routes */ }
+      <Route path="annotations" component={Annotations}/>
       <Route path="blog" component={Blog}/>
       <Route path="monitor" component={Monitor}/>
       <Route path="people" component={People}/>
