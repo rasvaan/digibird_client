@@ -29,8 +29,8 @@ export default class Species extends Component {
   }
   render() {
     const styles = require('./Annotations.scss');
-    const { accuratorResults, accuratorLoaded } = this.props;
-    console.log(accuratorResults, accuratorLoaded);
+    // const { accuratorResults, accuratorLoaded } = this.props;
+
     return (
       <div>
         <Helmet title="Annotations"/>
