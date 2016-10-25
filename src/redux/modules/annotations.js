@@ -28,9 +28,11 @@ function processResults(results) {
 
   // relate annotations to objects
   annos.forEach(annotation => {
+    console.log('looking at ', annotation['oa:hasBody']);
     aggregations.some(aggregation => {
       // match annotation target with object
       if (aggregation['edm:aggregatedCHO']['@id'] === annotation['oa:hasTarget']) {
+        console.log('matched ', annotation['oa:hasBody']);
         // add annotation to object
         if (aggregation['edm:aggregatedCHO'].annotations) {
           aggregation['edm:aggregatedCHO'].annotations.push(annotation);
