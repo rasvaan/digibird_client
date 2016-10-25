@@ -14,6 +14,9 @@ import Helmet from 'react-helmet';
     xcResults: state.objects['xeno-canto'].results,
     xcLoading: state.objects['xeno-canto'].loading,
     xcLoaded: state.objects['xeno-canto'].loaded,
+    nbResults: state.objects.natuurbeelden.results,
+    nbLoading: state.objects.natuurbeelden.loading,
+    nbLoaded: state.objects.natuurbeelden.loaded,
     rmaResults: state.objects.rijksmuseum.results,
     rmaLoading: state.objects.rijksmuseum.loading,
     rmaLoaded: state.objects.rijksmuseum.loaded,
@@ -33,6 +36,12 @@ import Helmet from 'react-helmet';
       const query = getState().routing.locationBeforeTransitions.query;
       return dispatch(loadObjects('xeno-canto', query));
     },
+  },
+  {
+    promise: ({store: {dispatch, getState}}) => {
+      const query = getState().routing.locationBeforeTransitions.query;
+      return dispatch(loadObjects('natuurbeelden', query));
+    },
   }
 ])
 export default class Species extends Component {
@@ -43,6 +52,9 @@ export default class Species extends Component {
     xcResults: PropTypes.object,
     xcLoaded: PropTypes.bool,
     xcLoading: PropTypes.bool,
+    nbResults: PropTypes.object,
+    nbLoading: PropTypes.bool,
+    nbLoaded: PropTypes.bool,
     rmaResults: PropTypes.object,
     rmaLoaded: PropTypes.bool,
     rmaLoading: PropTypes.bool,
@@ -79,6 +91,19 @@ export default class Species extends Component {
       );
     });
   }
+  natuurBeeldenNodes(nbResults) {
+    return nbResults['@graph'].map((result) => {
+      return (
+        <Media
+          key={result['edm:aggregatedCHO']['@id']}
+          url={result['edm:isShownBy']['@id']}
+          type={result['edm:isShownBy']['dcterms:type']}
+          title={result['edm:aggregatedCHO']['@id']}
+          color="color3"
+        />
+      );
+    });
+  }
   rijksmuseumNodes(rmaResults) {
     return rmaResults['@graph'].map((result) => {
       return (
@@ -94,19 +119,32 @@ export default class Species extends Component {
   }
   render() {
     const styles = require('./Species.scss');
-    const { nsrResults, nsrLoaded, xcResults, xcLoaded, rmaResults, rmaLoaded } = this.props;
+    const {
+      nsrResults,
+      nsrLoaded,
+      xcResults,
+      xcLoaded,
+      nbResults,
+      nbLoaded,
+      rmaResults,
+      rmaLoaded
+    } = this.props;
+
     let nsrNodes;
     let xcNodes;
+    let nbNodes;
     let rmaNodes;
 
     if (nsrLoaded) nsrNodes = this.soortenRegisterNodes(nsrResults);
     if (xcLoaded) xcNodes = this.xenoCantoNodes(xcResults);
+    if (nbLoaded) nbNodes = this.natuurBeeldenNodes(nbResults);
     if (rmaLoaded) rmaNodes = this.rijksmuseumNodes(rmaResults);
 
     return (
       <div>
         <Helmet title="Species"/>
         <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
+          {nbNodes}
           {nsrNodes}
           {xcNodes}
           {rmaNodes}
