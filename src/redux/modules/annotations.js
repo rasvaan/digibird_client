@@ -6,7 +6,7 @@ const initialState = {
 };
 
 function processResults(results) {
-  const aggregations = [];
+  let aggregations = [];
   const annos = [];
 
   // distinguish between aggregations and annotations
@@ -20,15 +20,19 @@ function processResults(results) {
         annos.push(result);
         break;
       }
-      default: break;
+      default: {
+        break;
+      }
     }
   });
 
   // relate annotations to objects
   annos.forEach(annotation => {
+    console.log('looking at ', annotation['oa:hasBody']);
     aggregations.some(aggregation => {
       // match annotation target with object
       if (aggregation['edm:aggregatedCHO']['@id'] === annotation['oa:hasTarget']) {
+        console.log('matched ', annotation['oa:hasBody']);
         // add annotation to object
         if (aggregation['edm:aggregatedCHO'].annotations) {
           aggregation['edm:aggregatedCHO'].annotations.push(annotation);
@@ -40,23 +44,20 @@ function processResults(results) {
     });
   });
 
+  // fitler objects without annotations
+  aggregations = aggregations.filter(aggregation => {
+    return aggregation['edm:aggregatedCHO'].annotations ? true : false;
+  });
+
   // sort annotation lists
   aggregations.forEach(aggregation => {
     // console.log('anno', aggregation['edm:aggregatedCHO'].annotations);
     if (aggregation['edm:aggregatedCHO'].annotations) {
       aggregation['edm:aggregatedCHO'].annotations.sort((one, two) => {
-        if (one['oa:annotatedAt'] > two['oa:annotatedAt']) {
-          return 1;
-        }
-        if (one['oa:annotatedAt'] < two['oa:annotatedAt']) {
-          return -1;
-        }
-        // one must be equal to two
-        return 0;
+        if (one['oa:annotatedAt'] > two['oa:annotatedAt']) return 1;
+        if (one['oa:annotatedAt'] < two['oa:annotatedAt']) return -1;
+        return 0; // one must be equal to two
       });
-    } else {
-      // TODO: there should'nt be aggregations without annotations
-      console.log('aggregation without annotations', aggregation['edm:aggregatedCHO']);
     }
   });
 
@@ -65,14 +66,9 @@ function processResults(results) {
     const dateOne = one['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
     const dateTwo = two['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
 
-    if (dateOne > dateTwo) {
-      return 1;
-    }
-    if (dateOne < dateTwo) {
-      return -1;
-    }
-    // one must be equal to two
-    return 0;
+    if (dateOne > dateTwo) return 1;
+    if (dateOne < dateTwo) return -1;
+    return 0; // dateOne must be equal to dateTwo
   });
 
   return aggregations;
