@@ -28,11 +28,9 @@ function processResults(results) {
 
   // relate annotations to objects
   annos.forEach(annotation => {
-    console.log('looking at ', annotation['oa:hasBody']);
     aggregations.some(aggregation => {
       // match annotation target with object
       if (aggregation['edm:aggregatedCHO']['@id'] === annotation['oa:hasTarget']) {
-        console.log('matched ', annotation['oa:hasBody']);
         // add annotation to object
         if (aggregation['edm:aggregatedCHO'].annotations) {
           aggregation['edm:aggregatedCHO'].annotations.push(annotation);
@@ -51,7 +49,6 @@ function processResults(results) {
 
   // sort annotation lists
   aggregations.forEach(aggregation => {
-    // console.log('anno', aggregation['edm:aggregatedCHO'].annotations);
     if (aggregation['edm:aggregatedCHO'].annotations) {
       aggregation['edm:aggregatedCHO'].annotations.sort((one, two) => {
         if (one['oa:annotatedAt'] > two['oa:annotatedAt']) return 1;
@@ -84,7 +81,6 @@ export default function annotations(state = initialState, action = {}) {
         }
       };
     case LOAD_SUCCESS:
-      console.log('can do something');
       return {
         ...state,
         [action.platform]: {
