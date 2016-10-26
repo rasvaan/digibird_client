@@ -14,9 +14,9 @@ import Helmet from 'react-helmet';
     xcResults: state.objects['xeno-canto'].results,
     xcLoading: state.objects['xeno-canto'].loading,
     xcLoaded: state.objects['xeno-canto'].loaded,
-    // nbResults: state.objects.natuurbeelden.results,
-    // nbLoading: state.objects.natuurbeelden.loading,
-    // nbLoaded: state.objects.natuurbeelden.loaded,
+    nbResults: state.objects.natuurbeelden.results,
+    nbLoading: state.objects.natuurbeelden.loading,
+    nbLoaded: state.objects.natuurbeelden.loaded,
     rmaResults: state.objects.rijksmuseum.results,
     rmaLoading: state.objects.rijksmuseum.loading,
     rmaLoaded: state.objects.rijksmuseum.loaded,
@@ -39,12 +39,12 @@ import Helmet from 'react-helmet';
       return dispatch(loadObjects('xeno-canto', query));
     },
   },
-  // {
-  //   promise: ({store: {dispatch, getState}}) => {
-  //     const query = getState().routing.locationBeforeTransitions.query;
-  //     return dispatch(loadObjects('natuurbeelden', query));
-  //   },
-  // }
+  {
+    promise: ({store: {dispatch, getState}}) => {
+      const query = getState().routing.locationBeforeTransitions.query;
+      return dispatch(loadObjects('natuurbeelden', query));
+    },
+  }
 ])
 export default class Species extends Component {
   static propTypes = {
@@ -54,9 +54,9 @@ export default class Species extends Component {
     xcResults: PropTypes.object,
     xcLoaded: PropTypes.bool,
     xcLoading: PropTypes.bool,
-    // nbResults: PropTypes.object,
-    // nbLoading: PropTypes.bool,
-    // nbLoaded: PropTypes.bool,
+    nbResults: PropTypes.object,
+    nbLoading: PropTypes.bool,
+    nbLoaded: PropTypes.bool,
     rmaResults: PropTypes.object,
     rmaLoaded: PropTypes.bool,
     rmaLoading: PropTypes.bool,
@@ -93,19 +93,19 @@ export default class Species extends Component {
       );
     });
   }
-  // natuurBeeldenNodes(nbResults) {
-  //   return nbResults['@graph'].map((result) => {
-  //     return (
-  //       <Media
-  //         key={result['edm:aggregatedCHO']['@id']}
-  //         url={result['edm:isShownBy']['@id']}
-  //         type={result['edm:isShownBy']['dcterms:type']}
-  //         title={result['edm:aggregatedCHO']['@id']}
-  //         color="color3"
-  //       />
-  //     );
-  //   });
-  // }
+  natuurBeeldenNodes(nbResults) {
+    return nbResults['@graph'].map((result) => {
+      return (
+        <Media
+          key={result['edm:aggregatedCHO']['@id']}
+          url={result['edm:isShownBy']['@id']}
+          type={result['edm:isShownBy']['dcterms:type']}
+          title={result['edm:aggregatedCHO']['@id']}
+          color="color3"
+        />
+      );
+    });
+  }
   rijksmuseumNodes(rmaResults) {
     return rmaResults['@graph'].map((result) => {
       return (
@@ -140,14 +140,14 @@ export default class Species extends Component {
     const styles = require('./Species.scss');
     const { nsrResults, nsrLoaded } = this.props;
     const { xcResults, xcLoaded } = this.props;
-    // const { nbResults, nbLoaded } = this.props;
+    const { nbResults, nbLoaded } = this.props;
     const { rmaResults, rmaLoaded } = this.props;
     let nodes = [];
 
     if (nsrLoaded) nodes.push(this.soortenRegisterNodes(nsrResults));
     if (rmaLoaded) nodes.push(this.rijksmuseumNodes(rmaResults));
     if (xcLoaded) nodes.push(this.xenoCantoNodes(xcResults));
-    // if (nbLoaded) nodes.push(this.natuurBeeldenNodes(nbResults));
+    if (nbLoaded) nodes.push(this.natuurBeeldenNodes(nbResults));
 
     nodes = this.mix(nodes);
 
