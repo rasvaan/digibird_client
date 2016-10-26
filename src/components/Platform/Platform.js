@@ -22,6 +22,7 @@ export default class Platform extends Component {
   componentWillUnmount() {
     clearInterval(this.intervalId);
   }
+  intervalId = null;
   loadStatisticsFromServer() {
     const url = `/api/statistics?platform=${this.props.id}`;
 
