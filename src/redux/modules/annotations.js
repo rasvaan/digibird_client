@@ -8,12 +8,12 @@ const UPDATE_FAIL = 'annotations/UPDATE_FAIL';
 const initialState = {
 };
 
-function detangleGraph(results) {
+function detangleResults(results) {
   const aggregations = [];
   const annos = [];
 
   // distinguish between aggregations and annotations
-  results['@graph'].forEach(result => {
+  results.forEach(result => {
     switch (result['@type']) {
       case 'ore:Aggregation': {
         aggregations.push(result);
@@ -86,7 +86,7 @@ function sortAggregations(aggregations) {
 }
 
 function processResults(graph) {
-  const results = detangleGraph(graph);
+  const results = detangleResults(graph['@graph']);
   const aggregations = relateAnnotationsToObjects(results.aggregations, results.annotations);
   const filteredAggregations = filterNotAnnotatedObjects(aggregations);
   const aggregationsSortedAnnotations = sortAnnotations(filteredAggregations);
@@ -110,24 +110,26 @@ function filterAdditions(results, oldResults) {
   });
 }
 
-function processUpdate(results, oldResults) {
-  // console.log('processing update ', results, ' old results ', oldResults);
-  let additions;
-
+function processUpdate(newResults, oldResults) {
   // merge in new results if there are already old ones
   if (oldResults) {
+    const results = detangleResults(newResults);
     // filter objects in results, extracting the new additions
-    additions = filterAdditions(results, oldResults);
-    console.log(additions);
+    const additions = filterAdditions(results.aggregations, oldResults);
+    // add annotations to old aggregations
+    const oldAggregations = relateAnnotationsToObjects(oldResults, results.annotations);
     // add annotations to new additions
-
+    const newAggregations = relateAnnotationsToObjects(additions, results.annotations);
+    // filter additions without annotations
+    const filteredAggregations = filterNotAnnotatedObjects(newAggregations);
+    // sort annotations new additions
+    const sortedAnnotations = sortAnnotations(filteredAggregations);
     // sort new additions
-
-    // add annotations to old ones
-
+    const sortedAggregations = sortAggregations(sortedAnnotations);
     // concatenate the new additions to the old ones
+    return oldAggregations.concat(sortedAggregations);
   }
-  return processResults(results);
+  return processResults(newResults);
 }
 
 export default function annotations(state = initialState, action = {}) {
@@ -169,6 +171,7 @@ export default function annotations(state = initialState, action = {}) {
         }
       };
     case UPDATE_SUCCESS:
+      console.log('OLD RESULTS', state[action.platform].results);
       return {
         ...state,
         [action.platform]: {
