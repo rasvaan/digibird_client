@@ -8,8 +8,8 @@ const UPDATE_FAIL = 'annotations/UPDATE_FAIL';
 const initialState = {
 };
 
-function processResults(results) {
-  let aggregations = [];
+function detangleGraph(results) {
+  const aggregations = [];
   const annos = [];
 
   // distinguish between aggregations and annotations
@@ -29,6 +29,10 @@ function processResults(results) {
     }
   });
 
+  return {'aggregations': aggregations, 'annotations': annos};
+}
+
+function relateAnnotationsToObjects(aggregations, annos) {
   // relate annotations to objects
   annos.forEach(annotation => {
     aggregations.some(aggregation => {
@@ -45,11 +49,17 @@ function processResults(results) {
     });
   });
 
+  return aggregations;
+}
+
+function filterNotAnnotatedObjects(aggregations) {
   // fitler objects without annotations
-  aggregations = aggregations.filter(aggregation => {
+  return aggregations.filter(aggregation => {
     return aggregation['edm:aggregatedCHO'].annotations ? true : false;
   });
+}
 
+function sortAnnotations(aggregations) {
   // sort annotation lists
   aggregations.forEach(aggregation => {
     if (aggregation['edm:aggregatedCHO'].annotations) {
@@ -60,9 +70,12 @@ function processResults(results) {
       });
     }
   });
+  return aggregations;
+}
 
+function sortAggregations(aggregations) {
   // sort objects based on first entry annotation list
-  aggregations.sort((one, two) => {
+  return aggregations.sort((one, two) => {
     const dateOne = one['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
     const dateTwo = two['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
 
@@ -70,13 +83,50 @@ function processResults(results) {
     if (dateOne < dateTwo) return -1;
     return 0; // dateOne must be equal to dateTwo
   });
+}
 
-  return aggregations;
+function processResults(graph) {
+  const results = detangleGraph(graph);
+  const aggregations = relateAnnotationsToObjects(results.aggregations, results.annotations);
+  const filteredAggregations = filterNotAnnotatedObjects(aggregations);
+  const aggregationsSortedAnnotations = sortAnnotations(filteredAggregations);
+  return sortAggregations(aggregationsSortedAnnotations);
+}
+
+function filterAdditions(results, oldResults) {
+  // filter objects that are not present
+  return results.filter(result => {
+    const id = result['edm:aggregatedCHO']['@id'];
+
+    oldResults.forEach(old => {
+      const oldId = old['edm:aggregatedCHO']['@id'];
+
+      if (oldId === id) {
+        console.log('matched ', oldId, ' with ', id);
+        return false;
+      }
+    });
+    return true;
+  });
 }
 
 function processUpdate(results, oldResults) {
-  // merge in new results if there are already old ones, do not bother for now
-  if (oldResults) return oldResults;
+  // console.log('processing update ', results, ' old results ', oldResults);
+  let additions;
+
+  // merge in new results if there are already old ones
+  if (oldResults) {
+    // filter objects in results, extracting the new additions
+    additions = filterAdditions(results, oldResults);
+    console.log(additions);
+    // add annotations to new additions
+
+    // sort new additions
+
+    // add annotations to old ones
+
+    // concatenate the new additions to the old ones
+  }
   return processResults(results);
 }
 
@@ -96,9 +146,8 @@ export default function annotations(state = initialState, action = {}) {
         [action.platform]: {
           ...state[action.platform],
           loading: false,
-          loaded: false
-          // loaded: true,
-          // results: processResults(action.result)
+          loaded: true,
+          results: processResults(action.result)
         }
       };
     case LOAD_FAIL:
@@ -126,7 +175,7 @@ export default function annotations(state = initialState, action = {}) {
           ...state[action.platform],
           loading: false,
           loaded: true,
-          results: processUpdate(action.result, [action.platform].results)
+          results: processUpdate(action.result['@graph'], state[action.platform].results)
         }
       };
     case UPDATE_FAIL:
