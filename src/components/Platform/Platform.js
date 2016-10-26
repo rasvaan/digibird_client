@@ -45,6 +45,11 @@ export default class Platform extends Component {
       statisticNodes = (<h4>No statistics available</h4>);
     } else {
       statisticNodes = this.state.statistics.map((statistic) => {
+        // make sure every value is of type string
+        if (typeof statistic.value === 'number') {
+          statistic.value = statistic.value.toString();
+        }
+
         return (
           <Statistic
             key={statistic.type}

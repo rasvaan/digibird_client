@@ -32,14 +32,16 @@ export default class Monitor extends Component {
 
     if (loaded) {
       platformNodes = platforms.map((platform) => {
-        return (
-          <Platform
-            key={platform.id}
-            name={platform.name}
-            id={platform.id}
-            pollInterval={platform.poll_interval}
-          />
-        );
+        if (platform.statistics) {
+          return (
+            <Platform
+              key={platform.id}
+              name={platform.name}
+              id={platform.id}
+              pollInterval={platform.poll_interval}
+            />
+          );
+        }
       });
     } else if (loading) {
       platformNodes = (
