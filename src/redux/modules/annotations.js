@@ -64,8 +64,8 @@ function sortAnnotations(aggregations) {
   aggregations.forEach(aggregation => {
     if (aggregation['edm:aggregatedCHO'].annotations) {
       aggregation['edm:aggregatedCHO'].annotations.sort((one, two) => {
-        if (one['oa:annotatedAt'] > two['oa:annotatedAt']) return 1;
-        if (one['oa:annotatedAt'] < two['oa:annotatedAt']) return -1;
+        if (one['oa:annotatedAt'] < two['oa:annotatedAt']) return 1;
+        if (one['oa:annotatedAt'] > two['oa:annotatedAt']) return -1;
         return 0; // one must be equal to two
       });
     }
@@ -79,8 +79,8 @@ function sortAggregations(aggregations) {
     const dateOne = one['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
     const dateTwo = two['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
 
-    if (dateOne > dateTwo) return 1;
-    if (dateOne < dateTwo) return -1;
+    if (dateOne < dateTwo) return 1;
+    if (dateOne > dateTwo) return -1;
     return 0; // dateOne must be equal to dateTwo
   });
 }
@@ -95,19 +95,22 @@ function processResults(graph) {
 
 function filterAdditions(results, oldResults) {
   // filter objects that are not present
-  return results.filter(result => {
+  const filtered = results.filter(result => {
     const id = result['edm:aggregatedCHO']['@id'];
+    let keep = true;
 
-    oldResults.forEach(old => {
+    oldResults.some(old => {
       const oldId = old['edm:aggregatedCHO']['@id'];
 
       if (oldId === id) {
-        console.log('matched ', oldId, ' with ', id);
-        return false;
+        keep = false; // disregard result
+        return true; // break out of loop
       }
     });
-    return true;
+    return keep;
   });
+
+  return filtered;
 }
 
 function processUpdate(newResults, oldResults) {
@@ -171,7 +174,6 @@ export default function annotations(state = initialState, action = {}) {
         }
       };
     case UPDATE_SUCCESS:
-      console.log('OLD RESULTS', state[action.platform].results);
       return {
         ...state,
         [action.platform]: {
