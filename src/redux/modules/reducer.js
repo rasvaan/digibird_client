@@ -12,5 +12,5 @@ export default combineReducers({
   blog,
   monitor,
   objects,
-  annotations
+  annotations,
 });

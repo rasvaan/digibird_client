@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Media } from 'components';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import { loadAnnotations } from '../../redux/modules/annotations';
+import { loadAnnotations, updateAnnotations } from '../../redux/modules/annotations';
 import Helmet from 'react-helmet';
 
 
@@ -12,7 +12,7 @@ import Helmet from 'react-helmet';
     accuratorLoading: state.annotations.accurator.loading,
     accuratorLoaded: state.annotations.accurator.loaded,
   }),
-  {}
+  {updateAnnotations}
 )
 @asyncConnect([
   {
@@ -25,7 +25,11 @@ export default class Species extends Component {
   static propTypes = {
     accuratorResults: PropTypes.array,
     accuratorLoading: PropTypes.bool,
-    accuratorLoaded: PropTypes.bool
+    accuratorLoaded: PropTypes.bool,
+    updateAnnotations: PropTypes.func
+  }
+  componentWillMount() {
+    this.props.updateAnnotations('accurator', 1);
   }
   accuratorNodes(accuratorResults) {
     return accuratorResults.map((result) => {
