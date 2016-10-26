@@ -41,7 +41,6 @@ export default class Annotations extends Component {
   updateAccurator() {
     // get date last poll
     const { accuratorLoadingAt } = this.props;
-    console.log('Last load at ', accuratorLoadingAt);
     this.props.updateAnnotations('accurator', accuratorLoadingAt);
   }
   accuratorNodes(accuratorResults) {

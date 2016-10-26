@@ -130,7 +130,7 @@ function processUpdate(newResults, oldResults) {
     // sort new additions
     const sortedAggregations = sortAggregations(sortedAnnotations);
     // concatenate the new additions to the old ones
-    return oldAggregations.concat(sortedAggregations);
+    return sortedAggregations.concat(oldAggregations);
   }
   return processResults(newResults);
 }
@@ -170,7 +170,7 @@ export default function annotations(state = initialState, action = {}) {
         [action.platform]: {
           ...state[action.platform],
           loading: true,
-          loadingAt: action.date
+          loadingAt: new Date(Date.now()).toISOString()
         }
       };
     case UPDATE_SUCCESS:
@@ -215,7 +215,6 @@ export function updateAnnotations(platform, date) {
   return {
     types: [UPDATE, UPDATE_SUCCESS, UPDATE_FAIL],
     platform: platform,
-    date: date,
     promise: (client) => client.get(url)
   };
 }
