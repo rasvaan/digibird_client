@@ -90,9 +90,13 @@ app.use((req, res) => {
         res.status(200);
 
         global.navigator = {userAgent: req.headers['user-agent']};
-
-        res.send('<!doctype html>\n' +
-          ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+        try {
+          res.send('<!doctype html>\n' +
+            ReactDOM.renderToString(<Html assets={webpackIsomorphicTools.assets()} component={component} store={store}/>));
+          } catch(e) {
+            const Redbox = require('redbox-react').default;
+            res.send(ReactDOM.renderToString(<Redbox error={e}/>));
+          }
       });
     } else {
       res.status(404).send('Not found');
