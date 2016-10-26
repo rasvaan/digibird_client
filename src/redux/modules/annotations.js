@@ -77,15 +77,17 @@ export default function annotations(state = initialState, action = {}) {
       return {
         ...state,
         [action.platform]: {
-          loading: true
+          loading: true,
+          loadingAt: action.date
         }
       };
     case LOAD_SUCCESS:
       return {
         ...state,
         [action.platform]: {
-          loaded: true,
+          ...state[action.platform],
           loading: false,
+          loaded: true,
           results: processResults(action.result)
         }
       };
@@ -105,10 +107,12 @@ export default function annotations(state = initialState, action = {}) {
 
 export function loadAnnotations(platform) {
   const url = `/api/annotations?platform=${platform}`;
+  const date = new Date(Date.now()).toISOString();
 
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     platform: platform,
+    date: date,
     promise: (client) => client.get(url)
   };
 }

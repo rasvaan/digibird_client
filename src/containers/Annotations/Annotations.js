@@ -46,7 +46,7 @@ export default class Species extends Component {
     let accuratorNodes;
 
     if (accuratorLoaded) accuratorNodes = this.accuratorNodes(accuratorResults);
-    console.log(accuratorLoaded, accuratorResults);
+
     return (
       <div>
         <Helmet title="Annotations"/>
