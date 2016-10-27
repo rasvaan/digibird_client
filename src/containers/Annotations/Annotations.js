@@ -45,16 +45,27 @@ export default class Annotations extends Component {
   }
   componentWillMount() {
     // set update interval
-    this.intervalId = setInterval(this.updateAccurator.bind(this), 5000000);
+    this.accuratorIntervalId = setInterval(
+      this.updateAccurator.bind(this), 5000
+    );
+    this.waisdaIntervalId = setInterval(
+      this.updateWaisda.bind(this), 5000
+    );
   }
   componentWillUnmount() {
     // use intervalId from the state to clear the interval
-    clearInterval(this.intervalId);
+    clearInterval(this.accuratorIntervalId);
+    clearInterval(this.waisdaIntervalId);
   }
   updateAccurator() {
     // get date last poll
     const { accuratorLoadingAt } = this.props;
     this.props.updateAnnotations('accurator', accuratorLoadingAt);
+  }
+  updateWaisda() {
+    // get date last poll
+    const { waisdaLoadingAt } = this.props;
+    this.props.updateAnnotations('waisda', waisdaLoadingAt);
   }
   createNodes(results) {
     return results.map((result) => {
