@@ -6,7 +6,8 @@ export default class Media extends Component {
     color: PropTypes.string,
     url: PropTypes.string,
     type: PropTypes.string,
-    title: PropTypes.string
+    title: PropTypes.string,
+    annotations: PropTypes.array,
   }
   mediaComponent(type, url) {
     switch (type) {
@@ -26,7 +27,7 @@ export default class Media extends Component {
   }
   render() {
     const styles = require('./Media.scss');
-    const { color, url, type, title } = this.props;
+    const { color, url, type, title, annotations } = this.props;
     const media = this.mediaComponent(type, url);
 
     return (
@@ -35,7 +36,7 @@ export default class Media extends Component {
           {media}
         </div>
         <div className="col-md-4">
-          <Metadata title={title} />
+          <Metadata title={title} annotations={annotations} />
         </div>
       </div>
     );

@@ -5,6 +5,7 @@
  *
  */
 
+export Annotation from './Annotation/Annotation';
 export Banner from './Banner/Banner';
 export Footer from './Footer/Footer';
 export BlogPost from './BlogPost/BlogPost';

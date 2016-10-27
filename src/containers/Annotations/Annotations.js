@@ -76,6 +76,7 @@ export default class Annotations extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['@id']}
           color="color1"
+          annotations={result['edm:aggregatedCHO'].annotations}
         />
       );
     });

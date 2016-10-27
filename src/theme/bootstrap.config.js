@@ -50,7 +50,7 @@ module.exports = {
     breadcrumbs: false,
     pagination: false,
     pager: false,
-    labels: false,
+    labels: true,
     badges: false,
     jumbotron: false,
     thumbnails: false,
