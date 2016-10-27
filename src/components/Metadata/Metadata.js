@@ -12,7 +12,7 @@ export default class Metadata extends Component {
     annotations.forEach(annotation => {
       nodes.push(
         <Annotation
-          uri={annotation['@id']}
+          key={annotation['@id']}
           body={annotation['oa:hasBody']}
         />
       );
