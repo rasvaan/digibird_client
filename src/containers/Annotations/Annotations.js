@@ -83,7 +83,6 @@ export default class Annotations extends Component {
     return aggregations;
   }
   sortResults(aggregations) {
-    console.log('FIRST RESUKT', aggregations[0]);
     // sort aggregations based on first entry annotation list
     return aggregations.sort((one, two) => {
       const dateOne = one['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];

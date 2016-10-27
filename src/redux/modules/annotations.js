@@ -15,17 +15,13 @@ function detangleResults(results) {
   // distinguish between aggregations and annotations
   results.forEach(result => {
     switch (result['@type']) {
-      case 'ore:Aggregation': {
+      case 'ore:Aggregation':
         aggregations.push(result);
         break;
-      }
-      case 'oa:Annotation': {
+      case 'oa:Annotation':
         annos.push(result);
         break;
-      }
-      default: {
-        break;
-      }
+      default: break;
     }
   });
 
@@ -59,46 +55,21 @@ function filterNotAnnotatedObjects(aggregations) {
   });
 }
 
-function sortAnnotations(aggregations) {
-  // sort annotation lists
-  aggregations.forEach(aggregation => {
-    if (aggregation['edm:aggregatedCHO'].annotations) {
-      aggregation['edm:aggregatedCHO'].annotations.sort((one, two) => {
-        if (one['oa:annotatedAt'] < two['oa:annotatedAt']) return 1;
-        if (one['oa:annotatedAt'] > two['oa:annotatedAt']) return -1;
-        return 0; // one must be equal to two
-      });
-    }
-  });
-  return aggregations;
-}
-
-function sortAggregations(aggregations) {
-  // sort objects based on first entry annotation list
-  return aggregations.sort((one, two) => {
-    const dateOne = one['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
-    const dateTwo = two['edm:aggregatedCHO'].annotations[0]['oa:annotatedAt'];
-
-    if (dateOne < dateTwo) return 1;
-    if (dateOne > dateTwo) return -1;
-    return 0; // dateOne must be equal to dateTwo
-  });
-}
-
 function processResults(graph) {
   const results = detangleResults(graph['@graph']);
   const aggregations = relateAnnotationsToObjects(results.aggregations, results.annotations);
-  const filteredAggregations = filterNotAnnotatedObjects(aggregations);
-  const aggregationsSortedAnnotations = sortAnnotations(filteredAggregations);
-  return sortAggregations(aggregationsSortedAnnotations);
+  return filterNotAnnotatedObjects(aggregations);
 }
 
-function filterAdditions(results, oldResults) {
-  // filter objects that are not present
-  const filtered = results.filter(result => {
+function mergeAdditions(results, oldResults) {
+  const merged = oldResults;
+
+  // add objects that are not present
+  results.forEach(result => {
     const id = result['edm:aggregatedCHO']['@id'];
     let keep = true;
 
+    // see if results is already there
     oldResults.some(old => {
       const oldId = old['edm:aggregatedCHO']['@id'];
 
@@ -107,30 +78,22 @@ function filterAdditions(results, oldResults) {
         return true; // break out of loop
       }
     });
-    return keep;
+
+    if (keep) merged.push(result);
   });
 
-  return filtered;
+  return merged;
 }
 
 function processUpdate(newResults, oldResults) {
   // merge in new results if there are already old ones
   if (oldResults) {
+    // split objects and annotations
     const results = detangleResults(newResults);
-    // filter objects in results, extracting the new additions
-    const additions = filterAdditions(results.aggregations, oldResults);
-    // add annotations to old aggregations
-    const oldAggregations = relateAnnotationsToObjects(oldResults, results.annotations);
-    // add annotations to new additions
-    const newAggregations = relateAnnotationsToObjects(additions, results.annotations);
-    // filter additions without annotations
-    const filteredAggregations = filterNotAnnotatedObjects(newAggregations);
-    // sort annotations new additions
-    const sortedAnnotations = sortAnnotations(filteredAggregations);
-    // sort new additions
-    const sortedAggregations = sortAggregations(sortedAnnotations);
-    // concatenate the new additions to the old ones
-    return sortedAggregations.concat(oldAggregations);
+    // add new objects
+    const merged = mergeAdditions(results.aggregations, oldResults);
+    // add annotations to aggregations
+    return relateAnnotationsToObjects(merged, results.annotations);
   }
   return processResults(newResults);
 }
