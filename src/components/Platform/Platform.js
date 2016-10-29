@@ -61,7 +61,7 @@ export default class Platform extends Component {
     }
 
     return (
-      <div className={`${styles.platform} col-sm-6 col-md-4`}>
+      <div className={`${styles.platform} col-sm-4 col-md-4`}>
         <h3 className={styles.platformHeader}>Statistics {name}</h3>
         {statisticNodes}
       </div>
