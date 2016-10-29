@@ -4,7 +4,7 @@ export default class Property extends Component {
   static propTypes = {
     property: PropTypes.string,
     value: PropTypes.string,
-    key: PropTypes.key,
+    key: PropTypes.string,
   }
 
   render() {

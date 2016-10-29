@@ -69,16 +69,35 @@ export default class Species extends Component {
   }
   soortenRegisterNodes(nsrResults) {
     return nsrResults['@graph'].map((result) => {
+      const metadata = this.soortenRegisterMetadata(result);
+
       return (
         <Media
           key={result['edm:aggregatedCHO']['@id']}
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
-          title={result['edm:aggregatedCHO']['@id']}
+          title={result['edm:aggregatedCHO']['dc:title']}
+          metadata={metadata}
           color="color1"
         />
       );
     });
+  }
+  soortenRegisterMetadata(result) {
+    const meta = [];
+    const uri = result['edm:aggregatedCHO']['@id'];
+    const creator = result['edm:aggregatedCHO']['dc:creator'];
+    const country = result['edm:aggregatedCHO']['dcterms:spatial'];
+    const date = result['edm:aggregatedCHO']['dcterms:temporal'];
+    const rights = result['dcterms:rights'];
+
+    if (creator) meta.push(this.metaObject(uri, 'creator', creator, 'text'));
+    if (country) meta.push(this.metaObject(uri, 'place', country, 'text'));
+    if (date) meta.push(this.metaObject(uri, 'date', date, 'text'));
+    if (rights) meta.push(this.metaObject(uri, 'copyright', rights, 'text'));
+    meta.push(this.metaObject(uri, 'source', 'Nederlands Soorten Register', 'text'));
+
+    return meta;
   }
   xenoCantoNodes(xcResults) {
     return xcResults['@graph'].map((result) => {
@@ -100,7 +119,6 @@ export default class Species extends Component {
     });
   }
   xenoCantoMetadata(result) {
-    console.log(result);
     const meta = [];
     const uri = `${result['edm:aggregatedCHO']['@id']}`;
     const creator = result['edm:aggregatedCHO']['dc:creator'];
@@ -108,10 +126,11 @@ export default class Species extends Component {
     const date = result['edm:aggregatedCHO']['dcterms:temporal'];
     const rights = result['dcterms:rights'];
 
-    if (creator) meta.push(this.metaObject(uri, 'recordist', creator, 'text'));
+    if (creator) meta.push(this.metaObject(uri, 'creator', creator, 'text'));
     if (country) meta.push(this.metaObject(uri, 'country', country, 'text'));
     if (date) meta.push(this.metaObject(uri, 'date', date, 'text'));
     if (rights) meta.push(this.metaObject(uri, 'rights', rights, 'text'));
+    meta.push(this.metaObject(uri, 'source', 'Xeno-canto', 'text'));
 
     return meta;
   }
@@ -190,8 +209,8 @@ export default class Species extends Component {
       <div>
         <Helmet title="Species"/>
         <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
-          {xenoCantoNodes}
           {nodes}
+          {xenoCantoNodes}
         </div>
       </div>
     );
