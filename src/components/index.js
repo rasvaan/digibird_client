@@ -15,4 +15,5 @@ export Sound from './Sound/Sound';
 export Video from './Video/Video';
 export Metadata from './Metadata/Metadata';
 export Platform from './Platform/Platform';
+export Property from './Property/Property';
 export Statistic from './Statistic/Statistic';

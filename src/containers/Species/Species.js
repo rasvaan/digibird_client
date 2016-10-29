@@ -82,10 +82,10 @@ export default class Species extends Component {
   }
   xenoCantoNodes(xcResults) {
     return xcResults['@graph'].map((result) => {
-      console.log(result);
       const title = this.capitalizeFirstLetter(
         result['edm:aggregatedCHO']['dc:type']
       );
+      const metadata = this.xenoCantoMetadata(result);
 
       return (
         <Media
@@ -93,10 +93,21 @@ export default class Species extends Component {
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
           title={title}
+          metadata={metadata}
           color="color2"
         />
       );
     });
+  }
+  xenoCantoMetadata(result) {
+    // console.log(result);
+    const meta = [];
+    const uri = `${result['edm:aggregatedCHO']['@id']}`;
+    const creator = result['edm:aggregatedCHO']['dc:creator'];
+
+    if (creator) meta.push(this.metaObject(uri, 'recordist', creator));
+
+    return meta;
   }
   natuurBeeldenNodes(nbResults) {
     return nbResults['@graph'].map((result) => {
@@ -124,6 +135,13 @@ export default class Species extends Component {
       );
     });
   }
+  metaObject(uri, property, value) {
+    return {
+      'key': `${uri}/${property}/${value}`,
+      'property': property,
+      'value': value,
+    };
+  }
   capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -150,13 +168,14 @@ export default class Species extends Component {
     const { xcResults, xcLoaded } = this.props;
     const { nbResults, nbLoaded } = this.props;
     const { rmaResults, rmaLoaded } = this.props;
+    let xenoCantoNodes;
     let nodes = [];
 
     // order of these lines is the order of sorting
     if (nsrLoaded) nodes.push(this.soortenRegisterNodes(nsrResults));
     if (nbLoaded) nodes.push(this.natuurBeeldenNodes(nbResults));
     if (rmaLoaded) nodes.push(this.rijksmuseumNodes(rmaResults));
-    if (xcLoaded) nodes.push(this.xenoCantoNodes(xcResults));
+    if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
     nodes = this.mix(nodes);
 
@@ -164,6 +183,7 @@ export default class Species extends Component {
       <div>
         <Helmet title="Species"/>
         <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
+          {xenoCantoNodes}
           {nodes}
         </div>
       </div>
