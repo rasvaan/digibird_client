@@ -77,6 +77,7 @@ export default class Annotations extends Component {
           title={result['edm:aggregatedCHO']['@id']}
           color="color1"
           annotations={result['edm:aggregatedCHO'].annotations}
+          thumbnail={result['edm:aggregatedCHO']['edm:preview'] || null}
         />
       );
     });

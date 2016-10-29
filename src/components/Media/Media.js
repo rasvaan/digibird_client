@@ -8,8 +8,9 @@ export default class Media extends Component {
     type: PropTypes.string,
     title: PropTypes.string,
     annotations: PropTypes.array,
+    thumbnail: PropTypes.string,
   }
-  mediaComponent(type, url) {
+  mediaComponent(type, url, thumbnail) {
     switch (type) {
       case 'dctype:Image': {
         return <Image url={url} />;
@@ -18,6 +19,9 @@ export default class Media extends Component {
         return <Sound url={url} />;
       }
       case 'dctype:MovingImage': {
+        if (thumbnail) {
+          return <Video url={url} thumbnail={thumbnail} />;
+        }
         return <Video url={url} />;
       }
       default: {
@@ -27,8 +31,8 @@ export default class Media extends Component {
   }
   render() {
     const styles = require('./Media.scss');
-    const { color, url, type, title, annotations } = this.props;
-    const media = this.mediaComponent(type, url);
+    const { color, url, type, title, annotations, thumbnail } = this.props;
+    const media = this.mediaComponent(type, url, thumbnail);
 
     return (
       <div className={`row ${styles[color]}  ${styles.noGutter}`}>
