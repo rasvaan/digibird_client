@@ -25,7 +25,7 @@ export default class Metadata extends Component {
     const { title, annotations } = this.props;
     let annotationNodes;
 
-    if (annotations.length > 0) {
+    if (annotations && annotations.length > 0) {
       annotationNodes = this.createAnnotationNodes(annotations);
     }
     return (
