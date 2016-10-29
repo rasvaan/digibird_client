@@ -24,25 +24,46 @@ export default class Monitor extends Component {
     loading: PropTypes.bool,
     loaded: PropTypes.bool
   }
+  createNodes(platforms) {
+    const nodes = [];
+    const filtered = platforms.filter(platform => {
+      return platform.statistics ? true : false;
+    });
+    const numberRows = Math.ceil(filtered.length / 3);
 
+    for (let row = 0; row < numberRows; row++) {
+      const begin = row * 3;
+      const end = begin + 3 < filtered.length ? begin + 3 : filtered.length;
+      const platformNodes = this.createPlatformNodes(
+        filtered.slice(begin, end)
+      );
+
+      nodes.push(
+        <div key={row} className="row">{platformNodes}</div>
+      );
+    }
+
+    return nodes;
+  }
+  createPlatformNodes(platforms) {
+    return platforms.map(platform => {
+      return (
+        <Platform
+          key={platform.id}
+          name={platform.name}
+          id={platform.id}
+          pollInterval={platform.poll_interval}
+        />
+      );
+    });
+  }
   render() {
     const styles = require('./Monitor.scss');
     const { platforms, loading, loaded } = this.props;
     let platformNodes;
 
     if (loaded) {
-      platformNodes = platforms.map((platform) => {
-        if (platform.statistics) {
-          return (
-            <Platform
-              key={platform.id}
-              name={platform.name}
-              id={platform.id}
-              pollInterval={platform.poll_interval}
-            />
-          );
-        }
-      });
+      platformNodes = this.createNodes(platforms);
     } else if (loading) {
       platformNodes = (
         <div className="row">
