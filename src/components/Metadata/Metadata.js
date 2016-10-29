@@ -38,9 +38,7 @@ export default class Metadata extends Component {
   }
   render() {
     const styles = require('./Metadata.scss');
-    console.log(this.props);
     const { title, metadata, annotations } = this.props;
-    console.log(metadata);
     let metadataNodes;
     let annotationNodes;
 

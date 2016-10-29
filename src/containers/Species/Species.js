@@ -100,12 +100,18 @@ export default class Species extends Component {
     });
   }
   xenoCantoMetadata(result) {
-    // console.log(result);
+    console.log(result);
     const meta = [];
     const uri = `${result['edm:aggregatedCHO']['@id']}`;
     const creator = result['edm:aggregatedCHO']['dc:creator'];
+    const country = result['edm:aggregatedCHO']['dcterms:spatial'];
+    const date = result['edm:aggregatedCHO']['dcterms:temporal'];
+    const rights = result['dcterms:rights'];
 
-    if (creator) meta.push(this.metaObject(uri, 'recordist', creator));
+    if (creator) meta.push(this.metaObject(uri, 'recordist', creator, 'text'));
+    if (country) meta.push(this.metaObject(uri, 'country', country, 'text'));
+    if (date) meta.push(this.metaObject(uri, 'date', date, 'text'));
+    if (rights) meta.push(this.metaObject(uri, 'rights', rights, 'text'));
 
     return meta;
   }
@@ -135,11 +141,12 @@ export default class Species extends Component {
       );
     });
   }
-  metaObject(uri, property, value) {
+  metaObject(uri, property, value, type) {
     return {
       'key': `${uri}/${property}/${value}`,
       'property': property,
       'value': value,
+      'type': type,
     };
   }
   capitalizeFirstLetter(string) {

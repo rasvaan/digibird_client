@@ -14,7 +14,7 @@ export default class Property extends Component {
     return (
       <div key={key}>
         <span className={styles.property}>{property} </span>
-        <span className={styles.value}>{value}</span>
+        <span className={styles.value}> {value}</span>
       </div>
     );
   }
