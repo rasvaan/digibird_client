@@ -6,13 +6,16 @@ export default class Sound extends Component {
   }
 
   render() {
+    const styles = require('./Sound.scss');
     const { url } = this.props;
 
     return (
-      <audio controls>
-        <source src={url} type="audio/mpeg" />
-        Your browser does not support the audio element.
-      </audio>
+      <div className={styles.aligner}>
+        <audio controls className={`${styles.sound}`}>
+          <source src={url} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
     );
   }
 }
