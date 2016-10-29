@@ -82,12 +82,17 @@ export default class Species extends Component {
   }
   xenoCantoNodes(xcResults) {
     return xcResults['@graph'].map((result) => {
+      console.log(result);
+      const title = this.capitalizeFirstLetter(
+        result['edm:aggregatedCHO']['dc:type']
+      );
+
       return (
         <Media
           key={result['edm:aggregatedCHO']['@id']}
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
-          title={result['edm:aggregatedCHO']['@id']}
+          title={title}
           color="color2"
         />
       );
@@ -119,6 +124,9 @@ export default class Species extends Component {
       );
     });
   }
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   mix(arrays) {
     const mix = [];
     let somethingLeft = true;
@@ -144,10 +152,11 @@ export default class Species extends Component {
     const { rmaResults, rmaLoaded } = this.props;
     let nodes = [];
 
+    // order of these lines is the order of sorting
     if (nsrLoaded) nodes.push(this.soortenRegisterNodes(nsrResults));
+    if (nbLoaded) nodes.push(this.natuurBeeldenNodes(nbResults));
     if (rmaLoaded) nodes.push(this.rijksmuseumNodes(rmaResults));
     if (xcLoaded) nodes.push(this.xenoCantoNodes(xcResults));
-    if (nbLoaded) nodes.push(this.natuurBeeldenNodes(nbResults));
 
     nodes = this.mix(nodes);
 
