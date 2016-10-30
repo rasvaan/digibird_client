@@ -3,9 +3,10 @@ import { Media } from 'components';
 import Typeahead from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-import { loadObjects } from '../../redux/modules/objects';
+// import { loadObjects } from '../../redux/modules/objects';
 import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
+import { Banner } from 'components';
 
 @connect(
   state => ({
@@ -24,28 +25,28 @@ import Helmet from 'react-helmet';
     query: state.routing.locationBeforeTransitions.query
   }),
   {
-    loadObjects
+    // loadObjects
   }
 )
 @asyncConnect([
-  {
-    promise: ({store: {dispatch, getState}}) => {
-      const query = getState().routing.locationBeforeTransitions.query;
-      return dispatch(loadObjects('soortenregister', query));
-    },
-  },
-  {
-    promise: ({store: {dispatch, getState}}) => {
-      const query = getState().routing.locationBeforeTransitions.query;
-      return dispatch(loadObjects('xeno-canto', query));
-    },
-  },
-  {
-    promise: ({store: {dispatch, getState}}) => {
-      const query = getState().routing.locationBeforeTransitions.query;
-      return dispatch(loadObjects('natuurbeelden', query));
-    },
-  }
+  // {
+  //   promise: ({store: {dispatch, getState}}) => {
+  //     const query = getState().routing.locationBeforeTransitions.query;
+  //     return dispatch(loadObjects('soortenregister', query));
+  //   },
+  // },
+  // {
+  //   promise: ({store: {dispatch, getState}}) => {
+  //     const query = getState().routing.locationBeforeTransitions.query;
+  //     return dispatch(loadObjects('xeno-canto', query));
+  //   },
+  // },
+  // {
+  //   promise: ({store: {dispatch, getState}}) => {
+  //     const query = getState().routing.locationBeforeTransitions.query;
+  //     return dispatch(loadObjects('natuurbeelden', query));
+  //   },
+  // }
 ])
 export default class Species extends Component {
   static propTypes = {
@@ -62,12 +63,12 @@ export default class Species extends Component {
     rmaLoaded: PropTypes.bool,
     rmaLoading: PropTypes.bool,
     query: PropTypes.object,
-    loadObjects: PropTypes.func
+    // loadObjects: PropTypes.func
   }
-  componentWillMount() {
-    const { query } = this.props;
-    this.props.loadObjects('rijksmuseum', query);
-  }
+  // componentWillMount() {
+  //   const { query } = this.props;
+  //   this.props.loadObjects('rijksmuseum', query);
+  // }
   soortenRegisterNodes(nsrResults) {
     return nsrResults['@graph'].map((result) => {
       const metadata = this.soortenRegisterMetadata(result);
@@ -211,7 +212,10 @@ export default class Species extends Component {
     if (rmaLoaded) nodes.push(this.rijksmuseumNodes(rmaResults));
     if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
-    nodes = this.mix(nodes);
+    // nodes = this.mix(nodes);
+    if (nodes.length === 0) {
+      nodes = <Banner title="Search for birds" image="search" />;
+    }
 
     return (
       <div>
