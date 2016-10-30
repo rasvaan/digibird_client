@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Media } from 'components';
+// import Typeahead from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { loadObjects } from '../../redux/modules/objects';
