@@ -7,7 +7,6 @@ import { loadObjects } from '../../redux/modules/objects';
 import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
 
-
 @connect(
   state => ({
     nsrResults: state.objects.soortenregister.results,
@@ -198,13 +197,15 @@ export default class Species extends Component {
   }
   render() {
     const styles = require('./Species.scss');
+    const alternatives = require('./species_en.json');
     const { nsrResults, nsrLoaded } = this.props;
     const { xcResults, xcLoaded } = this.props;
     const { nbResults, nbLoaded } = this.props;
     const { rmaResults, rmaLoaded } = this.props;
-    let alternatives;
     let xenoCantoNodes;
     let nodes = [];
+    // let alternatives;
+    // console.log(test);
 
     // order of these lines is the order of sorting
     if (nsrLoaded) nodes.push(this.soortenRegisterNodes(nsrResults));
@@ -213,7 +214,6 @@ export default class Species extends Component {
     if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
     nodes = this.mix(nodes);
-    alternatives = ['oehoe', 'zeearend'];
 
     return (
       <div>
