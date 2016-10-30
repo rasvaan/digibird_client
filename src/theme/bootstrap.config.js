@@ -42,7 +42,7 @@ module.exports = {
     forms: true,
     buttons: false,
     'component-animations': true,
-    dropdowns: false,
+    dropdowns: true,
     'button-groups': false,
     'input-groups': false,
     navs: true,
@@ -66,7 +66,7 @@ module.exports = {
     tooltip: false,
     popovers: false,
     carousel: false,
-    utilities: false,
+    utilities: true,
     'responsive-utilities': false
   }
 };

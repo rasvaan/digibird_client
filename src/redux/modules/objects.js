@@ -17,7 +17,12 @@ const initialState = {
     loaded: false,
     loading: false,
     results: {}
-  }
+  },
+  natuurbeelden: {
+    loaded: false,
+    loading: false,
+    results: {}
+  },
 };
 
 export default function objects(state = initialState, action = {}) {
@@ -70,6 +75,7 @@ export function loadObjects(platform, query) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     platform: platform,
+    query: query,
     promise: (client) => client.get(url)
   };
 }
