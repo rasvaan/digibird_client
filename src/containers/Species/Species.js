@@ -4,6 +4,7 @@ import Typeahead from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { loadObjects } from '../../redux/modules/objects';
+import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
 
 
@@ -189,6 +190,12 @@ export default class Species extends Component {
 
     return mix;
   }
+  handleInput(inputArray) {
+    // search for input
+    if (inputArray) {
+      browserHistory.push(`/species?common_name=${inputArray[0]}`);
+    }
+  }
   render() {
     const styles = require('./Species.scss');
     const { nsrResults, nsrLoaded } = this.props;
@@ -206,7 +213,7 @@ export default class Species extends Component {
     if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
     nodes = this.mix(nodes);
-    alternatives = ['a', 'c'];
+    alternatives = ['oehoe', 'zeearend'];
 
     return (
       <div>
@@ -214,6 +221,7 @@ export default class Species extends Component {
         <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
           <div className={`row ${styles.search}`}>
             <Typeahead className={styles.typeAhead}
+              onChange={this.handleInput}
               options={alternatives}
             />
           </div>
