@@ -76,7 +76,7 @@ export default class Species extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['dc:title']}
           metadata={metadata}
-          color="color3"
+          color="color1"
         />
       );
     });
@@ -111,7 +111,7 @@ export default class Species extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={title}
           metadata={metadata}
-          color="color1"
+          color="color4"
         />
       );
     });
@@ -144,7 +144,7 @@ export default class Species extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={title}
           metadata={metadata}
-          color="color3"
+          color="color2"
         />
       );
     });
@@ -175,7 +175,7 @@ export default class Species extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={title}
           metadata={metadata}
-          color="color4"
+          color="color3"
         />
       );
     });
@@ -240,10 +240,19 @@ export default class Species extends Component {
     let nodes = [];
 
     // order of these lines is the order of sorting
-    if (nsrLoaded) nodes.push(this.soortenRegisterNodes(nsrResults));
-    if (nbLoaded) nodes.push(this.natuurBeeldenNodes(nbResults));
-    if (rmaLoaded) nodes.push(this.rijksmuseumNodes(rmaResults));
-    if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
+    if (nsrLoaded) {
+      nodes.push(this.soortenRegisterNodes(nsrResults).slice(0, 3));
+    }
+    if (nbLoaded) {
+      nodes.push(this.natuurBeeldenNodes(nbResults).slice(0, 3));
+    }
+    if (rmaLoaded) {
+      nodes.push(this.rijksmuseumNodes(rmaResults).slice(0, 3));
+    }
+    if (xcLoaded) {
+      // render not so graphical xeno-canto results sepperately
+      xenoCantoNodes = this.xenoCantoNodes(xcResults).slice(0, 3);
+    }
 
     if (nodes.length === 0 && !(nsrLoaded || xcLoaded || nbLoaded || rmaLoaded)) {
       nodes = <Banner title="Search for birds" image="search" />;
