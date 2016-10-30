@@ -17,7 +17,12 @@ const initialState = {
     loaded: false,
     loading: false,
     results: {}
-  }
+  },
+  natuurbeelden: {
+    loaded: false,
+    loading: false,
+    results: {}
+  },
 };
 
 export default function objects(state = initialState, action = {}) {
