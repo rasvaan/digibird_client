@@ -75,6 +75,7 @@ export function loadObjects(platform, query) {
   return {
     types: [LOAD, LOAD_SUCCESS, LOAD_FAIL],
     platform: platform,
+    query: query,
     promise: (client) => client.get(url)
   };
 }

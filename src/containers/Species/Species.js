@@ -3,7 +3,7 @@ import { Media } from 'components';
 import Typeahead from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
-// import { loadObjects } from '../../redux/modules/objects';
+import { loadObjects } from '../../redux/modules/objects';
 import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
 import { Banner } from 'components';
@@ -25,7 +25,7 @@ import { Banner } from 'components';
     query: state.routing.locationBeforeTransitions.query
   }),
   {
-    // loadObjects
+    loadObjects
   }
 )
 @asyncConnect([
@@ -63,12 +63,16 @@ export default class Species extends Component {
     rmaLoaded: PropTypes.bool,
     rmaLoading: PropTypes.bool,
     query: PropTypes.object,
-    // loadObjects: PropTypes.func
+    loadObjects: PropTypes.func
   }
   // componentWillMount() {
   //   const { query } = this.props;
   //   this.props.loadObjects('rijksmuseum', query);
   // }
+  search(query) {
+    console.log('searching for ', query);
+    this.props.loadObjects('soortenregister', { 'common_name': query });
+  }
   soortenRegisterNodes(nsrResults) {
     return nsrResults['@graph'].map((result) => {
       const metadata = this.soortenRegisterMetadata(result);
@@ -194,6 +198,7 @@ export default class Species extends Component {
     // search for input
     if (inputArray && inputArray.length > 0) {
       browserHistory.push(`/species?common_name=${inputArray[0]}`);
+      this.search(inputArray[0]);
     }
   }
   render() {
@@ -213,8 +218,12 @@ export default class Species extends Component {
     if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
     // nodes = this.mix(nodes);
-    if (nodes.length === 0) {
+    if (nodes.length === 0 && !(nsrLoaded || xcLoaded || nbLoaded || rmaLoaded)) {
       nodes = <Banner title="Search for birds" image="search" />;
+    }
+
+    if (nodes.length === 0 && nsrLoaded && xcLoaded && nbLoaded && rmaLoaded) {
+      nodes = <Banner title="Nothing found" image="error" />;
     }
 
     return (
@@ -223,7 +232,7 @@ export default class Species extends Component {
         <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
           <div className={`row ${styles.search}`}>
             <Typeahead className={styles.typeAhead}
-              onChange={this.handleInput}
+              onChange={this.handleInput.bind(this)}
               options={alternatives}
             />
           </div>
