@@ -2,7 +2,6 @@ import React, { Component, PropTypes } from 'react';
 import { Media } from 'components';
 import Typeahead from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
-import { asyncConnect } from 'redux-connect';
 import { loadObjects } from '../../redux/modules/objects';
 import { browserHistory } from 'react-router';
 import Helmet from 'react-helmet';
@@ -28,26 +27,6 @@ import { Banner } from 'components';
     loadObjects
   }
 )
-@asyncConnect([
-  // {
-  //   promise: ({store: {dispatch, getState}}) => {
-  //     const query = getState().routing.locationBeforeTransitions.query;
-  //     return dispatch(loadObjects('soortenregister', query));
-  //   },
-  // },
-  // {
-  //   promise: ({store: {dispatch, getState}}) => {
-  //     const query = getState().routing.locationBeforeTransitions.query;
-  //     return dispatch(loadObjects('xeno-canto', query));
-  //   },
-  // },
-  // {
-  //   promise: ({store: {dispatch, getState}}) => {
-  //     const query = getState().routing.locationBeforeTransitions.query;
-  //     return dispatch(loadObjects('natuurbeelden', query));
-  //   },
-  // }
-])
 export default class Species extends Component {
   static propTypes = {
     nsrResults: PropTypes.object,
@@ -65,13 +44,26 @@ export default class Species extends Component {
     query: PropTypes.object,
     loadObjects: PropTypes.func
   }
-  // componentWillMount() {
-  //   const { query } = this.props;
-  //   this.props.loadObjects('rijksmuseum', query);
-  // }
+  componentWillMount() {
+    // read parameter from url, show results on load
+    const { query } = this.props;
+
+    // only search when parameters are provided
+    if (!(Object.keys(query).length === 0 && query.constructor === Object)) {
+      this.searchSystems(query);
+    }
+  }
   search(query) {
-    console.log('searching for ', query);
-    this.props.loadObjects('soortenregister', { 'common_name': query });
+    // search for a common name
+    const queryObject = { 'common_name': query };
+    this.searchSystems(queryObject);
+  }
+  searchSystems(queryObject) {
+    // fire search query for every available system
+    this.props.loadObjects('soortenregister', queryObject);
+    this.props.loadObjects('xeno-canto', queryObject);
+    this.props.loadObjects('rijksmuseum', queryObject);
+    this.props.loadObjects('natuurbeelden', queryObject);
   }
   soortenRegisterNodes(nsrResults) {
     return nsrResults['@graph'].map((result) => {
@@ -161,7 +153,7 @@ export default class Species extends Component {
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['@id']}
-          color="color3"
+          color="color4"
         />
       );
     });
@@ -217,13 +209,16 @@ export default class Species extends Component {
     if (rmaLoaded) nodes.push(this.rijksmuseumNodes(rmaResults));
     if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
-    // nodes = this.mix(nodes);
     if (nodes.length === 0 && !(nsrLoaded || xcLoaded || nbLoaded || rmaLoaded)) {
       nodes = <Banner title="Search for birds" image="search" />;
     }
 
     if (nodes.length === 0 && nsrLoaded && xcLoaded && nbLoaded && rmaLoaded) {
       nodes = <Banner title="Nothing found" image="error" />;
+    }
+
+    if (nodes.length > 0) {
+      nodes = this.mix(nodes);
     }
 
     return (
