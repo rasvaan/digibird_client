@@ -17,6 +17,7 @@ export default class Metadata extends Component {
           body={annotation['oa:hasBody']}
         />
       );
+      nodes.push(' '); // to be able to wrap
     });
 
     return nodes;
@@ -54,7 +55,9 @@ export default class Metadata extends Component {
       <div className={styles.metadata}>
         <h1>{title}</h1>
         { metadataNodes }
-        { annotationNodes }
+        <div className={styles.annotations}>
+          { annotationNodes }
+        </div>
       </div>
     );
   }
