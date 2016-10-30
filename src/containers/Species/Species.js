@@ -147,16 +147,34 @@ export default class Species extends Component {
   }
   rijksmuseumNodes(rmaResults) {
     return rmaResults['@graph'].map((result) => {
+      const metadata = this.rijksmuseumMetadata(result);
+      const title = result['edm:aggregatedCHO']['dc:title'] || result['edm:aggregatedCHO']['@id'];
+
       return (
         <Media
           key={result['edm:aggregatedCHO']['@id']}
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
-          title={result['edm:aggregatedCHO']['@id']}
+          title={title}
+          metadata={metadata}
           color="color4"
         />
       );
     });
+  }
+  rijksmuseumMetadata(result) {
+    const meta = [];
+    const uri = result['edm:aggregatedCHO']['@id'];
+    const creator = result['edm:aggregatedCHO']['dc:creator'];
+    const description = result['edm:aggregatedCHO']['dc:description'];
+    const rights = result['dcterms:rights'];
+
+    if (creator) meta.push(this.metaObject(uri, 'creator', creator, 'text'));
+    if (description) meta.push(this.metaObject(uri, 'description', description, 'text'));
+    if (rights) meta.push(this.metaObject(uri, 'rights', rights, 'text'));
+    meta.push(this.metaObject(uri, 'source', 'Rijksmuseum Amsterdam', 'text'));
+
+    return meta;
   }
   metaObject(uri, property, value, type) {
     return {
