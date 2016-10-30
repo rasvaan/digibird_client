@@ -46,10 +46,10 @@ export default class Annotations extends Component {
   componentWillMount() {
     // set update interval
     this.accuratorIntervalId = setInterval(
-      this.updateAccurator.bind(this), 5000
+      this.updateAccurator.bind(this), 50000000
     );
     this.waisdaIntervalId = setInterval(
-      this.updateWaisda.bind(this), 5000
+      this.updateWaisda.bind(this), 5000000
     );
   }
   componentWillUnmount() {
@@ -69,18 +69,47 @@ export default class Annotations extends Component {
   }
   createNodes(results) {
     return results.map((result) => {
+      const title = result['edm:aggregatedCHO']['dc:title'] || result['edm:aggregatedCHO']['@id'];
+      const metadata = this.metadata(result);
+
       return (
         <Media
           key={result['edm:aggregatedCHO']['@id']}
           url={result['edm:isShownBy']['@id']}
           type={result['edm:isShownBy']['dcterms:type']}
-          title={result['edm:aggregatedCHO']['@id']}
+          title={title}
           color="color1"
+          metadata={metadata}
           annotations={result['edm:aggregatedCHO'].annotations}
           thumbnail={result['edm:aggregatedCHO']['edm:preview'] || null}
         />
       );
     });
+  }
+  metadata(result) {
+    const meta = [];
+    const uri = result['edm:aggregatedCHO']['@id'];
+    const creator = result['edm:aggregatedCHO']['dc:creator'];
+    const country = result['edm:aggregatedCHO']['dcterms:spatial'];
+    const date = result['edm:aggregatedCHO']['dcterms:temporal'];
+    const rights = result['dcterms:rights'];
+    const description = result['edm:aggregatedCHO']['dc:description'];
+
+    if (creator) meta.push(this.metaObject(uri, 'creator', creator, 'text'));
+    if (country) meta.push(this.metaObject(uri, 'spatial', country, 'text'));
+    if (date) meta.push(this.metaObject(uri, 'date', date, 'text'));
+    if (rights) meta.push(this.metaObject(uri, 'rights', rights, 'text'));
+    if (description) meta.push(this.metaObject(uri, 'description', description, 'text'));
+
+    return meta;
+  }
+  metaObject(uri, property, value, type) {
+    return {
+      'key': `${uri}/${property}/${value}`,
+      'property': property,
+      'value': value,
+      'type': type,
+    };
   }
   sortAnnotations(aggregations) {
     // sort annotation lists

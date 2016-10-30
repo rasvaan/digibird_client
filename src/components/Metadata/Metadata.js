@@ -54,10 +54,10 @@ export default class Metadata extends Component {
     return (
       <div className={styles.metadata}>
         <h1>{title}</h1>
-        { metadataNodes }
         <div className={styles.annotations}>
           { annotationNodes }
         </div>
+        { metadataNodes }
       </div>
     );
   }

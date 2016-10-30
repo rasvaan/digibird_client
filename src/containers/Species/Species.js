@@ -118,7 +118,7 @@ export default class Species extends Component {
   }
   xenoCantoMetadata(result) {
     const meta = [];
-    const uri = `${result['edm:aggregatedCHO']['@id']}`;
+    const uri = result['edm:aggregatedCHO']['@id'];
     const creator = result['edm:aggregatedCHO']['dc:creator'];
     const country = result['edm:aggregatedCHO']['dcterms:spatial'];
     const date = result['edm:aggregatedCHO']['dcterms:temporal'];
