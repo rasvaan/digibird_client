@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Media } from 'components';
-// import Typeahead from 'react-bootstrap-typeahead';
+import Typeahead from 'react-bootstrap-typeahead';
 import { connect } from 'react-redux';
 import { asyncConnect } from 'redux-connect';
 import { loadObjects } from '../../redux/modules/objects';
@@ -195,6 +195,7 @@ export default class Species extends Component {
     const { xcResults, xcLoaded } = this.props;
     const { nbResults, nbLoaded } = this.props;
     const { rmaResults, rmaLoaded } = this.props;
+    let alternatives;
     let xenoCantoNodes;
     let nodes = [];
 
@@ -205,11 +206,17 @@ export default class Species extends Component {
     if (xcLoaded) xenoCantoNodes = this.xenoCantoNodes(xcResults);
 
     nodes = this.mix(nodes);
+    alternatives = ['a', 'c'];
 
     return (
       <div>
         <Helmet title="Species"/>
         <div className={`container-fluid  ${styles.noGutter} ${styles.noPadding}`}>
+          <div className={`row ${styles.search}`}>
+            <Typeahead className={styles.typeAhead}
+              options={alternatives}
+            />
+          </div>
           {nodes}
           {xenoCantoNodes}
         </div>

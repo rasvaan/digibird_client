@@ -11,3 +11,20 @@ CSS styling for Species page
    padding-right: 0;
    overflow: hidden;
 }
+
+.search {
+  background-color: #333333;
+  .typeAhead {
+    input {
+      background-color: #FFFFFF !important;
+    }
+    ul {
+      width: 400px;
+    }
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 7px;
+    margin-bottom: 7px;
+    width: 400px;
+  }
+}
