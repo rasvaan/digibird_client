@@ -191,7 +191,7 @@ export default class Species extends Component {
   }
   handleInput(inputArray) {
     // search for input
-    if (inputArray) {
+    if (inputArray && inputArray.length > 0) {
       browserHistory.push(`/species?common_name=${inputArray[0]}`);
     }
   }
@@ -204,8 +204,6 @@ export default class Species extends Component {
     const { rmaResults, rmaLoaded } = this.props;
     let xenoCantoNodes;
     let nodes = [];
-    // let alternatives;
-    // console.log(test);
 
     // order of these lines is the order of sorting
     if (nsrLoaded) nodes.push(this.soortenRegisterNodes(nsrResults));
