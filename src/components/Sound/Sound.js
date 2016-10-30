@@ -10,7 +10,7 @@ export default class Sound extends Component {
     const { url } = this.props;
 
     return (
-      <audio controls className={styles.sound}>
+      <audio controls preload="metadata" className={styles.sound}>
         <source src={url} type="audio/mpeg" />
         Your browser does not support the audio element.
       </audio>

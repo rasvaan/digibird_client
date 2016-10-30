@@ -12,9 +12,10 @@ export default class Video extends Component {
 
     return (
       <video
+        controls
+        preload="metadata"
         className={`${styles.video} embed-responsive`}
         poster={thumbnail}
-        controls
       >
         <source src={url} type="video/mp4" />
         Your browser does not support HTML5 video.

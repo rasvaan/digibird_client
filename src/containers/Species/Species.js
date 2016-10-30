@@ -76,7 +76,7 @@ export default class Species extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={result['edm:aggregatedCHO']['dc:title']}
           metadata={metadata}
-          color="color1"
+          color="color3"
         />
       );
     });
@@ -111,7 +111,7 @@ export default class Species extends Component {
           type={result['edm:isShownBy']['dcterms:type']}
           title={title}
           metadata={metadata}
-          color="color2"
+          color="color1"
         />
       );
     });
