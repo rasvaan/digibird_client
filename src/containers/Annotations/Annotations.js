@@ -46,10 +46,10 @@ export default class Annotations extends Component {
   componentWillMount() {
     // set update interval
     this.accuratorIntervalId = setInterval(
-      this.updateAccurator.bind(this), 50000000
+      this.updateAccurator.bind(this), 5000
     );
     this.waisdaIntervalId = setInterval(
-      this.updateWaisda.bind(this), 5000000
+      this.updateWaisda.bind(this), 5000
     );
   }
   componentWillUnmount() {
