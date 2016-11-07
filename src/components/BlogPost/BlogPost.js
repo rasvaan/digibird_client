@@ -18,10 +18,10 @@ export default class BlogPost extends Component {
     const {title, link, date, content} = this.props;
 
     return (
-      <div className="row">
+      <div className={`${styles.blogPost} row`}>
         <div className="col-sm-8 col-sm-offset-2">
           <div className="col-sm-12">
-            <h2>{title}</h2>
+            <h1>{title}</h1>
           </div>
           <div className="col-sm-12">
             <h5>

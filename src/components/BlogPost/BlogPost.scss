@@ -1,17 +1,21 @@
 /*******************************************************************************
 CSS styling for BlogPost component
 *******************************************************************************/
-.date {
-  margin-left: 3px;
-}
+.blogPost {
+  margin-bottom: 40px;
 
-.link {
-  margin-left: 10px;
-  .text {
+  .date {
     margin-left: 3px;
   }
-}
 
-.content {
-  font-size: 1.2em;
+  .link {
+    margin-left: 10px;
+    .text {
+      margin-left: 3px;
+    }
+  }
+
+  .content {
+    font-size: 1.2em;
+  }
 }
