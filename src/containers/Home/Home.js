@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router';
 import { Banner, Footer } from 'components';
 import Helmet from 'react-helmet';
 
@@ -17,7 +18,6 @@ export default class Home extends Component {
             </div>
           </div>
         </div>
-
         <div className={`${styles.marketingContainer} container`}>
           <div className="row">
             <div className="col-sm-6 col-md-3">
@@ -38,7 +38,7 @@ export default class Home extends Component {
             <div className="col-sm-6 col-md-3">
               <i className={`${styles.jumboIcon} fa fa-rocket`}></i>
               <h2>API</h2>
-              <p>And what can you do with this nicely enriched and aligned data? We will provide you with an API, allowing you to embed the data on your own site. Not that much of a code monkey? There will be a demonstrator showcasing the functions of this API.</p>
+              <p>And what can you do with this nicely enriched and aligned data? We created an <a href="https://github.com/rasvaan/digibird_api">API</a>, allowing you to embed the data on your own site. Not that much of a code monkey? The <Link to="/annotations">annotation wall</Link> and <Link to="/species">species page</Link> showcase the functions of this API.</p>
             </div>
           </div>
         </div>
