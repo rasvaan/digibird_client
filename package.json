@@ -34,7 +34,8 @@
         "NODE_PATH": "./src",
         "NODE_ENV": "production",
         "PORT": 3000,
-        "APIPORT": 3030
+        "APIHOST": "api.digibird.eculture.labs.vu.nl",
+        "APIPORT": 80
       }
     },
     "start-dev": {
