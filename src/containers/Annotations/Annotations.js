@@ -17,7 +17,10 @@ import Helmet from 'react-helmet';
     waisdaLoaded: state.annotations.waisda.loaded,
     waisdaLoadingAt: state.annotations.waisda.loadingAt,
   }),
-  {updateAnnotations}
+  {
+    updateAnnotations,
+    loadAnnotations
+  }
 )
 @asyncConnect([
   {
@@ -41,7 +44,8 @@ export default class Annotations extends Component {
     waisdaLoading: PropTypes.bool,
     waisdaLoaded: PropTypes.bool,
     waisdaLoadingAt: PropTypes.string,
-    updateAnnotations: PropTypes.func
+    updateAnnotations: PropTypes.func,
+    loadAnnotations: PropTypes.func
   }
   componentWillMount() {
     // set update interval
@@ -58,14 +62,24 @@ export default class Annotations extends Component {
     clearInterval(this.waisdaIntervalId);
   }
   updateAccurator() {
-    // get date last poll
-    const { accuratorLoadingAt } = this.props;
-    this.props.updateAnnotations('accurator', accuratorLoadingAt);
+    const { accuratorLoading, accuratorLoadingAt, accuratorLoaded } = this.props;
+
+    // only update incase inital load happened
+    if (!accuratorLoading && accuratorLoaded) {
+      this.props.updateAnnotations('accurator', accuratorLoadingAt);
+    } else if (!accuratorLoading) {
+      this.props.loadAnnotations('accurator');
+    }
   }
   updateWaisda() {
-    // get date last poll
-    const { waisdaLoadingAt } = this.props;
-    this.props.updateAnnotations('waisda', waisdaLoadingAt);
+    const { waisdaLoading, waisdaLoadingAt, waisdaLoaded } = this.props;
+
+    // only update incase inital load happened
+    if (!waisdaLoading && waisdaLoaded) {
+      this.props.updateAnnotations('waisda', waisdaLoadingAt);
+    } else if (!waisdaLoading) {
+      this.props.loadAnnotations('waisda');
+    }
   }
   createNodes(results) {
     return results.map((result) => {
