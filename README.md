@@ -1,5 +1,7 @@
 # DigiBird: on the fly collection integration
-[DigiBird](http://www.digibird.org) is a node.js project that integrates cultural heritage data on the fly. Check out the website: [www.digibird.org](http://www.digibird.org).
+*Note:* this project is no longer in active development and the repository has been archived. The results of the DigiBird project have been documented in the paper: [DigiBird: On The Fly Collection Integration Supported By The Crowd](https://mw17.mwconf.org/paper/digibird-on-the-fly-collection-integration-supported-by-the-crowd/).
+
+[DigiBird](http://www.digibird.org) is a node.js project that integrates cultural heritage data on the fly.
 
 ## Technologies
 
